@@ -1,4 +1,4 @@
-import Names
+from . import Names
 
 
 def link_tower_structures(world, player):  # Directly taken from Minecraft's region connection
@@ -62,7 +62,7 @@ def link_tower_structures(world, player):  # Directly taken from Minecraft's reg
             world.spoiler.set_entrance(exit, pairs[exit], 'entrance', player)
 
 
-tower_regions = {
+tower_regions = [
     ("Menu", ["New Save"]),
     ("Tower Lobby", [
         "Tower Lobby Stage 0", "Tower Lobby Stage 1", "Tower Lobby Stage 2", "Tower Lobby Stage 3",
@@ -108,9 +108,9 @@ tower_regions = {
     (Names.kidsparty, []),
     (Names.war, []),
     (Names.tower, []),
-}
+]
 
-mandatory_connections = {
+mandatory_connections = [
     ("New Save", "Tower Lobby"),
     (Names.pepperman + " Stage", "Western District"),
     (Names.vigilante + " Stage", "Vacation Resort"),
@@ -120,9 +120,9 @@ mandatory_connections = {
 
     ("Tower Lobby Stage 0", Names.tutorial),
     ("Staff Only Stage 4", Names.tower),
-}
+]
 
-default_connections = {
+default_connections = [
     ("Tower Lobby Stage 1", Names.entrance),
     ("Tower Lobby Stage 2", Names.medieval),
     ("Tower Lobby Stage 3", Names.ruin),
@@ -150,7 +150,7 @@ default_connections = {
 
     ("Staff Only Stage 1", Names.chateau),
     ("Staff Only Stage 2", Names.kidsparty),
-    ("Staff Only Stage 3", Names.war),
-}
+    ("Staff Only Stage 3", Names.war)
+]
 
 illegal_connections = {}
