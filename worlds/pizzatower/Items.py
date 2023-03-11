@@ -17,6 +17,8 @@ def create_item(player: int, name: str) -> Item:
     item_data = item_table[name]
     if item_data.required:
         classification = ItemClassification.progression
+    elif item_data.trap:
+        classification = ItemClassification.trap
     else:
         classification = ItemClassification.filler
     item = PizzaTowerItem(name, classification, item_data.code, player)

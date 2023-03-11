@@ -40,6 +40,7 @@ class PizzaTowerWorld(World):
     def fill_slot_data(self):
         slot_data = {
             "seed": self.multiworld.seed_name,
+            "death_link": self.multiworld.death_link[self.player].value,
         }
 
         for option_name in self.option_definitions:
