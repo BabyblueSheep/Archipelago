@@ -1,0 +1,42 @@
+pizza towre ap plan dump
+
+
+Potential Stuff for Pizza Tower AP
+
+- Items Recieved -
+Important Items - Toppins (individual) and Boss Keys
+Junk Items - Treasure, Pizza Box (Gives the player x amount of points)
+Traps -  Timer Trap (Sets the current timer to a minute. Get outta there!), some kind of hit/stun trap, transformation trap
+
+- Items Sent -
+Toppins
+Treasure
+Level Clears
+
+- YAML Options -
+Level Shuffle - Shuffles the levels.
+Rank Required - Any (D)/C/B/A/S/P (don't pick p lol)
+Judgement Goal (percent you need to get to clear your game) - Any/50%/61%/72%/83%/95%/JohnApproved 
+
+
+
+Level complete
+Level complete with secrets
+Level complete with treasure but not secrets*
+S rank
+*Would it be possible to enforce Lap 2 Treasure only? That would be an interesting alternative challenge rule. 
+
+
+
+Could also trigger a death link when you hit one of the "Hurt Peppino" milestones
+Deathlink support spawns Pizza Face
+
+
+
+
+MAYBE do something about dmas
+
+
+
+Maybe there could be checks for Lap 2 completion. I'm sure some people would want P ranks as checks, but this could be a nice middle ground option?
+Might also be nice to have an option to spawn at the John Pillar when you enter the level (maybe hold a button while entering?) so you can try again for lap 2 if need be

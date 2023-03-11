@@ -116,11 +116,13 @@ mandatory_connections = {
     (Names.vigilante + " Stage", "Vacation Resort"),
     (Names.noise + " Stage", "Slum"),
     (Names.fakepep + " Stage", "Staff Only"),
-    (Names.pizzaface + " Stage", "Victory")
+    (Names.pizzaface + " Stage", "Victory"),
+
+    ("Tower Lobby Stage 0", Names.tutorial),
+    ("Staff Only Stage 4", Names.tower),
 }
 
 default_connections = {
-    ("Tower Lobby Stage 0", Names.tutorial),
     ("Tower Lobby Stage 1", Names.entrance),
     ("Tower Lobby Stage 2", Names.medieval),
     ("Tower Lobby Stage 3", Names.ruin),
@@ -149,7 +151,6 @@ default_connections = {
     ("Staff Only Stage 1", Names.chateau),
     ("Staff Only Stage 2", Names.kidsparty),
     ("Staff Only Stage 3", Names.war),
-    ("Staff Only Stage 4", Names.tower),
 }
 
 illegal_connections = {}
