@@ -1,4 +1,4 @@
-from BaseClasses import Item
+from BaseClasses import Item, ItemClassification, MultiWorld
 from .Names import *
 import typing
 
@@ -10,6 +10,36 @@ class ItemData(typing.NamedTuple):
 
 class PizzaTowerItem(Item):
     game: str = "Pizza Tower"
+
+
+def create_item(player: int, name: str) -> Item:
+    item_data = item_table[name]
+    if item_data.required:
+        classification = ItemClassification.progression
+    else:
+        classification = ItemClassification.filler
+    item = PizzaTowerItem(name, classification, item_data.code, player)
+    return item
+
+
+def create_all_items(world: MultiWorld, player: int) -> None:
+    pool_option = world.traps[player].value  # in case we want traps to be a toggle
+    sum_locations = len(world.get_unfilled_locations(player))
+
+    itempool: typing.List = []
+    for item_name, item_data in important_table.items():
+        itempool += item_name
+
+    # junk_pool = item_pool_weights[pool_option]
+    random_count = sum_locations - len(itempool)
+    itempool += world.random.choices(
+        population=list(junk_table.keys()),
+        weights=list(junk_table.values()),
+        k=random_count
+    )
+
+    world.itempool += [create_item(player, name) for name in itempool]
+
 
 important_table = {
     entrance+" Mushroom Toppin": ItemData(8820001, True),
