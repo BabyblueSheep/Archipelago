@@ -1,5 +1,5 @@
 import typing
-from Options import Choice, Toggle, Option
+from Options import Choice, Toggle, Option, DeathLink
 
 
 class LevelShuffle(Toggle):
@@ -35,6 +35,7 @@ class JohnNeeded(Toggle):
 
 
 pizza_tower_options: typing.Dict[str, type(Option)] = {
+    "death_link": DeathLink,
     "shuffle_level": LevelShuffle,
     "rank_needed": RankRequirement,
     "john": JohnNeeded,

@@ -3,6 +3,7 @@ from ..AutoWorld import World, WebWorld
 from .Options import pizza_tower_options
 from .Items import item_table, PizzaTowerItem
 from .Locations import task_table
+from . import Options, Items, Locations, Regions, Rules
 
 
 class PizzaTowerWeb(WebWorld):
@@ -23,7 +24,6 @@ class PizzaTowerWorld(World):
     """Pizza Tower is a fast-paced 2D platformer inspired by the Wario Land series, in which you progress through levels
     in the titular Pizza Tower, incorporating a tight combo system, multiple types of collectibles, escape sequences, and bosses."""
 
-
     game: str = "Pizza Tower"
     option_definitions = pizza_tower_options
     topology_present = False
@@ -34,11 +34,22 @@ class PizzaTowerWorld(World):
 
     data_version = 1
 
-    def create_item(self, name: str) -> Item:
-        item_data = item_table[name]
-        if item_data.required:
-            classification = ItemClassification.progression
-        else:
-            classification = ItemClassification.filler
-        item = PizzaTowerItem(name, classification, item_data.code, self.player)
-        return item
+    def get_option(self, name):
+        return getattr(self.multiworld, name)[self.player].value
+
+    def fill_slot_data(self):
+        slot_data = {
+            "seed": self.multiworld.seed_name,
+        }
+
+        for option_name in self.option_definitions:
+            slot_data[option_name] = self.get_option(option_name)
+
+        return slot_data
+
+    def create_regions(self) -> None:
+        Regions.link_tower_structures(self.multiworld, self.player)
+
+    def create_items(self) -> None:
+        Items.create_all_items(self.multiworld, self.player)
+
