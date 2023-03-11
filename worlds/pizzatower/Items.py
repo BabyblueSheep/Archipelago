@@ -2,6 +2,7 @@ from BaseClasses import Item, ItemClassification, MultiWorld
 from .Names import *
 import typing
 
+
 class ItemData(typing.NamedTuple):
     code: typing.Optional[int]
     required: bool
