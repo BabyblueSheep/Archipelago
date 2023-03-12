@@ -35,7 +35,7 @@ def link_tower_structures(world, player):  # Directly taken from Minecraft's reg
 
     # The algorithm tries to place the most restrictive structures first. This algorithm always works on the
     # relatively small set of restrictions here, but does not work on all possible inputs with valid configurations.
-    if world.shuffle_structures[player]:
+    if world.shuffle_level[player]:
         structs.sort(reverse=True, key=lambda s: len(illegal_connections.get(s, [])))
         for struct in structs[:]:
             try:
@@ -58,7 +58,7 @@ def link_tower_structures(world, player):  # Directly taken from Minecraft's reg
 
     for exit in exits_spoiler:
         world.get_entrance(exit, player).connect(world.get_region(pairs[exit], player))
-        if world.shuffle_structures[player] or world.plando_connections[player]:
+        if world.shuffle_level[player] or world.plando_connections[player]:
             world.spoiler.set_entrance(exit, pairs[exit], 'entrance', player)
 
 
@@ -110,7 +110,7 @@ tower_regions = [
     (Names.tower, []),
 ]
 
-mandatory_connections = [
+mandatory_connections = {
     ("New Save", "Tower Lobby"),
     (Names.pepperman + " Stage", "Western District"),
     (Names.vigilante + " Stage", "Vacation Resort"),
@@ -120,7 +120,7 @@ mandatory_connections = [
 
     ("Tower Lobby Stage 0", Names.tutorial),
     ("Staff Only Stage 4", Names.tower),
-]
+}
 
 default_connections = [
     ("Tower Lobby Stage 1", Names.entrance),

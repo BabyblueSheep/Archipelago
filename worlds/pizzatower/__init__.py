@@ -1,8 +1,9 @@
-from BaseClasses import Item, MultiWorld, Tutorial, ItemClassification
+from BaseClasses import Item, MultiWorld, Tutorial, ItemClassification, Entrance, Region
+from .Regions import tower_regions
 from ..AutoWorld import World, WebWorld
 from .Options import pizza_tower_options
 from .Items import item_table, PizzaTowerItem
-from .Locations import task_table
+from .Locations import task_table, PizzaTowerTask
 from . import Options, Items, Locations, Regions, Rules
 
 
@@ -49,6 +50,16 @@ class PizzaTowerWorld(World):
         return slot_data
 
     def create_regions(self) -> None:
+        def TowerRegion(region_name: str, exits=[]):
+            ret = Region(region_name, self.player, self.multiworld)
+            ret.locations = [PizzaTowerTask(self.player, loc_name, loc_data.id, ret)
+                for loc_name, loc_data in task_table.items()
+                if loc_data.region == region_name]
+            for exit in exits:
+                ret.exits.append(Entrance(self.player, exit, ret))
+            return ret
+
+        self.multiworld.regions += [TowerRegion(*r) for r in tower_regions]
         Regions.link_tower_structures(self.multiworld, self.player)
 
     def create_items(self) -> None:
