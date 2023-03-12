@@ -7,6 +7,11 @@ class LevelShuffle(Toggle):
     display_name = "Level Shuffle"
 
 
+class TowerSecretTreasure(Toggle):
+    """Whether finding the secret topping in a level counts as a check."""
+    display_name = "Tower Secret Treasure"
+
+
 class RankRequirement(Choice):
     """What rank is required to send items upon level completion."""
     display_name = "Required Rank"
@@ -38,6 +43,7 @@ pizza_tower_options: typing.Dict[str, type(Option)] = {
     "death_link": DeathLink,
     "shuffle_level": LevelShuffle,
     "rank_needed": RankRequirement,
+    "tower_secret_treasure": TowerSecretTreasure,
     "john": JohnNeeded,
     "goal": JudgementRequirement
 }
