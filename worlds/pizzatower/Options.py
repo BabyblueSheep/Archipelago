@@ -75,10 +75,16 @@ class SecretLocation(Toggle):
     display_name = "Secret Checks"
 
 
+class TowerSecretTreasure(Toggle):
+    """Whether finding the secret topping in a level counts as a check."""
+    display_name = "Tower Secret Treasure"
+
+
 pizza_tower_options: typing.Dict[str, type(Option)] = {
     "death_link": DeathLink,
 
     "secret_check": SecretLocation,
+    "treasure_check": TowerSecretTreasure,
 
     "timer_trap": TimerTrap,
     "stun_trap": StunTrap,
