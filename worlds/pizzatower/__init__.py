@@ -4,7 +4,7 @@ from ..AutoWorld import World, WebWorld
 from .Options import pizza_tower_options
 from .Items import item_table, PizzaTowerItem
 from .Locations import task_table, PizzaTowerTask
-from . import Options, Items, Locations, Regions, Rules
+from . import Options, Items, Locations, Regions, Rules, Names
 
 
 class PizzaTowerWeb(WebWorld):
@@ -33,7 +33,7 @@ class PizzaTowerWorld(World):
     item_name_to_id = {name: data.code for name, data in item_table.items()}
     location_name_to_id = {name: data.id for name, data in task_table.items()}
 
-    data_version = 1
+    data_version = 0
 
     def get_option(self, name):
         return getattr(self.multiworld, name)[self.player].value
@@ -64,4 +64,9 @@ class PizzaTowerWorld(World):
 
     def create_items(self) -> None:
         Items.create_all_items(self.multiworld, self.player)
+
+    def generate_basic(self) -> None:
+        victory_item = Items.create_item(self.player, "Victory")
+        self.multiworld.get_location("Escape " + Names.tower, self.player).place_locked_item(victory_item)
+        self.multiworld.completion_condition[self.player] = lambda state: state.has("Victory", self.player)
 

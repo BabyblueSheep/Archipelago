@@ -14,7 +14,6 @@ class PizzaTowerItem(Item):
 
 
 def create_item(player: int, name: str) -> Item:
-
     item_data = item_table[name]
     if item_data.required:
         classification = ItemClassification.progression
@@ -27,24 +26,13 @@ def create_item(player: int, name: str) -> Item:
 
 
 def create_all_items(world: MultiWorld, player: int) -> None:
-    # ill figure out smth with classification items later
+    exclude = [item for item in world.precollected_items[player]]
 
-    # pool_option = world.traps[player].value  # in case we want traps to be a toggle
-    # sum_locations = len(world.get_unfilled_locations(player))
+    for name, data in important_table.items():
+        item = create_item(player, name)
+        if not (item in exclude or item.name == "Victory"):
+            world.itempool.append(item)
 
-    # itempool: typing.List = []
-    # for item_name, item_data in important_table.items():
-    #     itempool += item_name
-
-    # junk_pool = item_pool_weights[pool_option]
-    # random_count = sum_locations - len(itempool)
-    #itempool += world.random.choices(
-    #    population=list(junk_table.keys()),
-    #    weights=list(junk_table.values()),
-    #    k=random_count
-    #)
-
-    world.itempool += [create_item(player, name) for name in item_table]
 
 
 important_table = {
