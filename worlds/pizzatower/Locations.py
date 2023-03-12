@@ -150,6 +150,28 @@ task_table = {
     "Escape " + Names.tower: LocationData(8821544, Names.tower),
 }
 
+secret_treasure_table = {
+    Names.entrance + " Secret Treasure": LocationData(8821051, Names.entrance),
+    Names.medieval + " Secret Treasure": LocationData(8821052, Names.medieval),
+    Names.ruin + " Secret Treasure": LocationData(8821053, Names.ruin),
+    Names.dungeon + " Secret Treasure": LocationData(8821054, Names.dungeon),
+    Names.badland + " Secret Treasure": LocationData(8821061, Names.badland),
+    Names.graveyard + " Secret Treasure": LocationData(8821062, Names.graveyard),
+    Names.farm + " Secret Treasure": LocationData(8821063, Names.farm),
+    Names.saloon + " Secret Treasure": LocationData(8821064, Names.saloon),
+    Names.plage + " Secret Treasure": LocationData(8821071, Names.plage),
+    Names.forest + " Secret Treasure": LocationData(8821072, Names.forest),
+    Names.space + " Secret Treasure": LocationData(8821073, Names.space),
+    Names.minigolf + " Secret Treasure": LocationData(8821074, Names.minigolf),
+    Names.street + " Secret Treasure": LocationData(8821081, Names.street),
+    Names.industrial + " Secret Treasure": LocationData(8821082, Names.industrial),
+    Names.sewer + " Secret Treasure": LocationData(8821083, Names.sewer),
+    Names.freezer + " Secret Treasure": LocationData(8821084, Names.freezer),
+    Names.chateau + " Secret Treasure": LocationData(8821091, Names.chateau),
+    Names.kidsparty + " Secret Treasure": LocationData(8821092, Names.kidsparty),
+    Names.war + " Secret Treasure": LocationData(8821093, Names.war),
+}
+
 exclusion_table = {
 
 }
