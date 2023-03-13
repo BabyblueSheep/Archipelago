@@ -13,26 +13,13 @@ class PizzaTowerItem(Item):
     game: str = "Pizza Tower"
 
 
-def create_item(player: int, name: str) -> Item:
-    item_data = item_table[name]
-    if item_data.required:
-        classification = ItemClassification.progression
-    elif item_data.trap:
-        classification = ItemClassification.trap
-    else:
-        classification = ItemClassification.filler
-    item = PizzaTowerItem(name, classification, item_data.code, player)
-    return item
-
-
 def create_all_items(world: MultiWorld, player: int) -> None:
     exclude = [item for item in world.precollected_items[player]]
 
     for name, data in important_table.items():
-        item = create_item(player, name)
-        if not (item in exclude or item.name == "Victory"):
+        item = world.create_item(name, player)
+        if item not in exclude:
             world.itempool.append(item)
-
 
 
 important_table = {

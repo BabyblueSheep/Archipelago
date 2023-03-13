@@ -27,13 +27,15 @@ class PizzaTowerWorld(World):
 
     game: str = "Pizza Tower"
     option_definitions = pizza_tower_options
-    topology_present = False
+    topology_present = True
     web = PizzaTowerWeb()
 
     item_name_to_id = {name: data.code for name, data in item_table.items()}
     location_name_to_id = {name: data.id for name, data in task_table.items()}
 
     data_version = 0
+
+    # required_client_version = (1, 0, 311)
 
     def get_option(self, name):
         return getattr(self.multiworld, name)[self.player].value
@@ -49,12 +51,23 @@ class PizzaTowerWorld(World):
 
         return slot_data
 
+    def create_item(self, name: str) -> PizzaTowerItem:
+        item_data = item_table[name]
+        if item_data.required:
+            classification = ItemClassification.progression
+        elif item_data.trap:
+            classification = ItemClassification.trap
+        else:
+            classification = ItemClassification.filler
+        item = PizzaTowerItem(name, classification, item_data.code, self.player)
+        return item
+
     def create_regions(self) -> None:
         def TowerRegion(region_name: str, exits=[]):
             ret = Region(region_name, self.player, self.multiworld)
             ret.locations = [PizzaTowerTask(self.player, loc_name, loc_data.id, ret)
-                for loc_name, loc_data in task_table.items()
-                if loc_data.region == region_name]
+                             for loc_name, loc_data in task_table.items()
+                             if loc_data.region == region_name]
             for exit in exits:
                 ret.exits.append(Entrance(self.player, exit, ret))
             return ret
@@ -65,8 +78,14 @@ class PizzaTowerWorld(World):
     def create_items(self) -> None:
         Items.create_all_items(self.multiworld, self.player)
 
-    def generate_basic(self) -> None:
-        victory_item = Items.create_item(self.player, "Victory")
-        self.multiworld.get_location("Escape " + Names.tower, self.player).place_locked_item(victory_item)
-        self.multiworld.completion_condition[self.player] = lambda state: state.has("Victory", self.player)
+    def generate_early(self) -> None:
+        world = self.multiworld
 
+        victory = self.create_item("Victory")
+        world.push_precollected(victory)
+
+    def generate_basic(self) -> None:
+        world = self.multiworld
+
+        victory = self.create_item("Victory")
+        world.get_location("Escape " + Names.tower, self.player).place_locked_item(victory)
