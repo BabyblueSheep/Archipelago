@@ -83,7 +83,8 @@ class TowerSecretTreasure(Toggle):
 pizza_tower_options: typing.Dict[str, type(Option)] = {
     "death_link": DeathLink,
 
-    "secret_check": SecretLocation,
+    # maybe this will be added in the future
+    # "secret_check": SecretLocation,
     "treasure_check": TowerSecretTreasure,
 
     "timer_trap": TimerTrap,
