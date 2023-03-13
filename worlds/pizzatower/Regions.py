@@ -62,6 +62,12 @@ def link_tower_structures(world, player):  # Directly taken from Minecraft's reg
             world.spoiler.set_entrance(exit, pairs[exit], 'entrance', player)
 
 
+floor_1_regions = [Names.tutorial, Names.entrance, Names.medieval, Names.ruin, Names.dungeon]
+floor_2_regions = [Names.badland, Names.graveyard, Names.farm, Names.saloon]
+floor_3_regions = [Names.plage, Names.forest, Names.space, Names.minigolf]
+floor_4_regions = [Names.street, Names.industrial, Names.sewer, Names.freezer]
+floor_5_regions = [Names.chateau, Names.kidsparty, Names.war, Names.tower]
+
 tower_regions = [
     ("Menu", ["New Save"]),
     ("Tower Lobby", [

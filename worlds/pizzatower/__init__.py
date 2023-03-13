@@ -1,5 +1,6 @@
 from BaseClasses import Item, MultiWorld, Tutorial, ItemClassification, Entrance, Region
 from .Regions import tower_regions
+from .Rules import set_rules
 from ..AutoWorld import World, WebWorld
 from .Options import pizza_tower_options
 from .Items import item_table, PizzaTowerItem
@@ -89,4 +90,6 @@ class PizzaTowerWorld(World):
 
         victory = self.create_item("Victory")
         world.get_location("Escape " + Names.tower, self.player).place_locked_item(victory)
-        self.multiworld.completion_condition[self.player] = lambda state: state.has("Victory", self.player)
+
+    def set_rules(self) -> None:
+        set_rules(self.multiworld, self.player)
