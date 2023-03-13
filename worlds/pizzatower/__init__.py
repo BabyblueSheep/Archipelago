@@ -89,3 +89,4 @@ class PizzaTowerWorld(World):
 
         victory = self.create_item("Victory")
         world.get_location("Escape " + Names.tower, self.player).place_locked_item(victory)
+        self.multiworld.completion_condition[self.player] = lambda state: state.has("Victory", self.player)
