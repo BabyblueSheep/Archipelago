@@ -23,7 +23,7 @@ def create_all_items(world: MultiWorld, player: int) -> None:
             world.itempool.append(item)
 
 toppin_table = {
-    entrance + " Mushroom Toppin": ItemData(8820001, False, False, False, True),
+    entrance + " Mushroom Toppin": ItemData(8820001, False, True),
     entrance + " Cheese Toppin": ItemData(8820002, False, True),
     entrance + " Tomato Toppin": ItemData(8820003, False, True),
     entrance + " Sausage Toppin": ItemData(8820004, False, True),
@@ -144,6 +144,7 @@ trap_table = {
 }
 
 item_table = {
+    **toppin_table,
     **important_table,
     **junk_table,
     **trap_table
