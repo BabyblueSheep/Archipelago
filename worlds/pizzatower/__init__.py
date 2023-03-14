@@ -61,7 +61,7 @@ class PizzaTowerWorld(World):
         if item_data.required:
             classification = ItemClassification.progression
         elif item_data.toppin:
-            classification = ItemClassification.useful
+            classification = ItemClassification.progression_skip_balancing
         elif item_data.trap:
             classification = ItemClassification.trap
         else:
