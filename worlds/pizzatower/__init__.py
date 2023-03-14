@@ -3,7 +3,7 @@ from .Regions import tower_regions
 from .Rules import set_rules
 from ..AutoWorld import World, WebWorld
 from .Options import pizza_tower_options
-from .Items import item_table, PizzaTowerItem
+from .Items import item_table, PizzaTowerItem, toppin_table
 from .Locations import task_table, PizzaTowerTask
 from . import Options, Items, Locations, Regions, Rules, Names
 
@@ -37,6 +37,10 @@ class PizzaTowerWorld(World):
     data_version = 0
 
     # required_client_version = (1, 0, 311)
+
+    item_name_groups = {
+        "toppins": toppin_table.keys()
+    }
 
     def get_option(self, name):
         return getattr(self.multiworld, name)[self.player].value

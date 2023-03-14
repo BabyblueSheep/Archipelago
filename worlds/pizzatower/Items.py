@@ -22,8 +22,7 @@ def create_all_items(world: MultiWorld, player: int) -> None:
         if item not in exclude:
             world.itempool.append(item)
 
-
-important_table = {
+toppin_table = {
     entrance + " Mushroom Toppin": ItemData(8820001, False, False, False, True),
     entrance + " Cheese Toppin": ItemData(8820002, False, True),
     entrance + " Tomato Toppin": ItemData(8820003, False, True),
@@ -123,7 +122,9 @@ important_table = {
     war + " Tomato Toppin": ItemData(8820423, False, True),
     war + " Sausage Toppin": ItemData(8820424, False, True),
     war + " Pineapple Toppin": ItemData(8820425, False, True),
+}
 
+important_table = {
     pepperman + " Boss Key": ItemData(8820501, True),
     vigilante + " Boss Key": ItemData(8820501, True),
     noise + " Boss Key": ItemData(8820501, True),

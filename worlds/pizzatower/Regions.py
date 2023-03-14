@@ -73,10 +73,10 @@ tower_regions = [
     ("Tower Lobby", [
         "Tower Lobby Stage 0", "Tower Lobby Stage 1", "Tower Lobby Stage 2", "Tower Lobby Stage 3",
         "Tower Lobby Stage 4",
-        "Pepperman Stage"]),
+        Names.pepperman + " Stage"]),
     ("Western District", [
         "Western District Stage 1", "Western District Stage 2", "Western District Stage 3", "Western District Stage 4",
-        "The Vigilante Stage"]),
+        Names.vigilante + " Stage"]),
     ("Vacation Resort", [
         "Vacation Resort Stage 1", "Vacation Resort Stage 2", "Vacation Resort Stage 3", "Vacation Resort Stage 4",
         Names.noise + " Stage"]),
