@@ -21,6 +21,12 @@ def create_all_items(world: MultiWorld, player: int) -> None:
         item = world.create_item(name, player)
         if item not in exclude:
             world.itempool.append(item)
+            
+    
+    for name, data in toppin_table.items():
+        item = world.create_item(name, player)
+        if item not in exclude:
+            world.itempool.append(item)            
 
 toppin_table = {
     entrance + " Mushroom Toppin": ItemData(8820001, False, True),
