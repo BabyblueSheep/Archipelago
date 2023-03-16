@@ -14,7 +14,7 @@ class BaseTrapWeight(Choice):
 
 
 class TimerTrap(BaseTrapWeight):
-    """Likelihood of a receiving a trap which starts Pizza Time earlier than usual."""
+    """Likelihood of a receiving a trap which starts Pizza Time early."""
     display_name = "Timer Trap Weight"
 
 
@@ -70,21 +70,27 @@ class JohnNeeded(Toggle):
     display_name = "Required John"
 
 
-class SecretLocation(Toggle):
-    """Whether secret entrances grant checks."""
-    display_name = "Secret Checks"
-
-
 class TowerSecretTreasure(Toggle):
     """Whether finding the secret topping in a level counts as a check."""
     display_name = "Tower Secret Treasure"
 
 
+class BossKeys(Choice):
+    """Chooses how boss keys are handled.
+    Bosses Defeated: bosses need to be defeated in order to access the next floor.
+    Keys Randomised: keys need to be gotten from players to access the next floor.
+    Both: bosses need to be defeated and keys have to be gotten from players to access the next floor.
+    """
+    display_name = "Boss Keys"
+    option_bosses_defeated = 0
+    option_keys_randomised = 1
+    option_both = 2
+
+
 pizza_tower_options: typing.Dict[str, type(Option)] = {
     "death_link": DeathLink,
 
-    # maybe this will be added in the future
-    # "secret_check": SecretLocation,
+    "boss_keys": BossKeys,
     "treasure_check": TowerSecretTreasure,
 
     "timer_trap": TimerTrap,
