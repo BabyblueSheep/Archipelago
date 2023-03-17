@@ -48,6 +48,10 @@ class PizzaTowerWorld(World):
     def fill_slot_data(self):
         slot_data = {
             "seed": self.multiworld.seed_name,
+            "level_shuffle": self.multiworld.shuffle_level[self.player].value,
+            "rank_needed": self.multiworld.rank_needed[self.player].value,
+            "judgement": self.multiworld.goal[self.player].value,
+            "john": self.multiworld.john[self.player].value,
             "death_link": self.multiworld.death_link[self.player].value,
         }
 
