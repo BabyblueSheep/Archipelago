@@ -31,4 +31,7 @@ def set_rules(world: MultiWorld, player: int):
     set_rule(world.get_entrance(Names.fakepep + " Stage", player), lambda state: state._pizza_has_toppins(player, 65))
     set_rule(world.get_entrance(Names.pizzaface + " Stage", player), lambda state: state._pizza_has_toppins(player, 86))
 
+    if world.boss_keys[player].value == 0 or world.boss_keys[player].value == 2:
+        pass
+
     world.completion_condition[player] = lambda state: state.has("Victory", player)

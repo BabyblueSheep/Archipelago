@@ -146,7 +146,6 @@ task_table = {
     "Escape " + Names.chateau: LocationData(88210051, Names.chateau),
     "Escape " + Names.kidsparty: LocationData(88210052, Names.kidsparty),
     "Escape " + Names.war: LocationData(88210053, Names.war),
-    "Defeat " + Names.pizzaface: LocationData(88210055, "Staff Only"),
     "Escape " + Names.tower: LocationData(88210054, Names.tower),
 }
 

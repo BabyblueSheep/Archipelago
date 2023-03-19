@@ -74,7 +74,7 @@ class PizzaTowerWorld(World):
         return item
 
     def create_regions(self) -> None:
-        def TowerRegion(region_name: str, exits=[]):
+        def create_region(region_name: str, exits=[]):
             ret = Region(region_name, self.player, self.multiworld)
             ret.locations = [PizzaTowerTask(self.player, loc_name, loc_data.id, ret)
                              for loc_name, loc_data in task_table.items()
@@ -83,7 +83,7 @@ class PizzaTowerWorld(World):
                 ret.exits.append(Entrance(self.player, exit, ret))
             return ret
 
-        self.multiworld.regions += [TowerRegion(*r) for r in tower_regions]
+        self.multiworld.regions += [create_region(*r) for r in tower_regions]
         Regions.link_tower_structures(self.multiworld, self.player)
 
     def create_items(self) -> None:
@@ -92,14 +92,28 @@ class PizzaTowerWorld(World):
     def generate_early(self) -> None:
         world = self.multiworld
 
-        victory = self.create_item("Victory")
-        world.push_precollected(victory)
+        world.push_precollected(self.create_item("Victory"))
+
+        if self.multiworld.boss_keys[self.player].value == 0:
+            world.push_precollected(self.create_item(Names.pepperman + " Boss Key"))
+            world.push_precollected(self.create_item(Names.vigilante + " Boss Key"))
+            world.push_precollected(self.create_item(Names.noise + " Boss Key"))
+            world.push_precollected(self.create_item(Names.fakepep + " Boss Key"))
 
     def generate_basic(self) -> None:
         world = self.multiworld
 
-        victory = self.create_item("Victory")
-        world.get_location("Escape " + Names.tower, self.player).place_locked_item(victory)
+        world.get_location("Escape " + Names.tower, self.player).place_locked_item(self.create_item("Victory"))
+
+        if self.multiworld.boss_keys[self.player].value == 0:
+            world.get_location("Defeat " + Names.pepperman, self.player)\
+                .place_locked_item(self.create_item(Names.pepperman + " Boss Key"))
+            world.get_location("Defeat " + Names.vigilante, self.player)\
+                .place_locked_item(self.create_item(Names.vigilante + " Boss Key"))
+            world.get_location("Defeat " + Names.noise, self.player)\
+                .place_locked_item(self.create_item(Names.noise + " Boss Key"))
+            world.get_location("Defeat " + Names.fakepep, self.player)\
+                .place_locked_item(self.create_item(Names.fakepep + " Boss Key"))
 
     def set_rules(self) -> None:
         set_rules(self.multiworld, self.player)
