@@ -1,4 +1,7 @@
+import math
+
 from BaseClasses import Item, ItemClassification, MultiWorld
+from . import Locations
 from .Names import *
 import typing
 
@@ -33,6 +36,24 @@ def create_all_items(world: MultiWorld, player: int) -> None:
             item = world.create_item(name, player)
             if item not in exclude:
                 world.itempool.append(item)
+
+    junk_count = 16
+    trap_weights = []
+    trap_weights += (["Stun Trap"] * world.timer_trap[player].value)
+    trap_weights += (["Timer Trap"] * world.stun_trap[player].value)
+    trap_weights += (["Transformation Trap"] * world.transformation_trap[player].value)
+    trap_count = 0 if (len(trap_weights) == 0) else math.ceil(
+        junk_count * (world.trap_fill_percentage[player].value / 100.0))
+    junk_count -= trap_count
+
+    trap_pool = []
+    for i in range(trap_count):
+        item = world.create_item(world.random.choice(trap_weights), player)
+        trap_pool.append(item)
+
+    world.itempool += trap_pool
+    world.itempool += [world.create_item("Super Taunt Charge", player) for i in range(junk_count)]
+
 
 
 toppin_table = {
