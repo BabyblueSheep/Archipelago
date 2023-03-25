@@ -4,7 +4,7 @@ from .Rules import set_rules
 from ..AutoWorld import World, WebWorld
 from .Options import pizza_tower_options
 from .Items import item_table, PizzaTowerItem, toppin_table
-from .Locations import task_table, PizzaTowerTask
+from .Locations import PizzaTowerTask, location_table, treasure_table
 from . import Options, Items, Locations, Regions, Rules, Names
 
 
@@ -32,7 +32,7 @@ class PizzaTowerWorld(World):
     web = PizzaTowerWeb()
 
     item_name_to_id = {name: data.code for name, data in item_table.items()}
-    location_name_to_id = {name: data.id for name, data in task_table.items()}
+    location_name_to_id = {name: data.id for name, data in location_table.items()}
 
     data_version = 0
 
@@ -64,8 +64,11 @@ class PizzaTowerWorld(World):
         item_data = item_table[name]
         if item_data.required:
             classification = ItemClassification.progression
-        elif item_data.toppin:
-            classification = ItemClassification.progression_skip_balancing
+        elif item_data.treasure and self.multiworld.treasure_check[self.player].value:
+            if self.multiworld.john[self.player].value:
+                classification = ItemClassification.progression
+            else:
+                classification = ItemClassification.useful
         elif item_data.trap:
             classification = ItemClassification.trap
         else:
@@ -76,9 +79,10 @@ class PizzaTowerWorld(World):
     def create_regions(self) -> None:
         def create_region(region_name: str, exits=[]):
             ret = Region(region_name, self.player, self.multiworld)
-            ret.locations = [PizzaTowerTask(self.player, loc_name, loc_data.id, ret)
-                             for loc_name, loc_data in task_table.items()
-                             if loc_data.region == region_name]
+            for loc_name, loc_data in location_table.items():
+                if loc_data.region != region_name:
+                    continue
+                ret.locations.append(PizzaTowerTask(self.player, loc_name, loc_data.id, ret))
             for exit in exits:
                 ret.exits.append(Entrance(self.player, exit, ret))
             return ret
@@ -92,28 +96,38 @@ class PizzaTowerWorld(World):
     def generate_early(self) -> None:
         world = self.multiworld
 
-        world.push_precollected(self.create_item("Victory"))
-
         if self.multiworld.boss_keys[self.player].value == 0:
-            world.push_precollected(self.create_item(Names.pepperman + " Boss Key"))
-            world.push_precollected(self.create_item(Names.vigilante + " Boss Key"))
-            world.push_precollected(self.create_item(Names.noise + " Boss Key"))
-            world.push_precollected(self.create_item(Names.fakepep + " Boss Key"))
+            pass
+            # world.push_precollected(self.create_item(Names.pepperman + " Boss Key"))
+            # world.push_precollected(self.create_item(Names.vigilante + " Boss Key"))
+            # world.push_precollected(self.create_item(Names.noise + " Boss Key"))
+            # world.push_precollected(self.create_item(Names.fakepep + " Boss Key"))
+
+        if self.multiworld.treasure_check[self.player].value:
+            pass
 
     def generate_basic(self) -> None:
         world = self.multiworld
 
-        world.get_location("Escape " + Names.tower, self.player).place_locked_item(self.create_item("Victory"))
+        world.get_location("Escape " + Names.tower, self.player) \
+            .place_locked_item(self.create_item("Victory"))
 
         if self.multiworld.boss_keys[self.player].value == 0:
-            world.get_location("Defeat " + Names.pepperman, self.player)\
+            world.get_location("Defeat " + Names.pepperman, self.player) \
                 .place_locked_item(self.create_item(Names.pepperman + " Boss Key"))
-            world.get_location("Defeat " + Names.vigilante, self.player)\
+            world.get_location("Defeat " + Names.vigilante, self.player) \
                 .place_locked_item(self.create_item(Names.vigilante + " Boss Key"))
-            world.get_location("Defeat " + Names.noise, self.player)\
+            world.get_location("Defeat " + Names.noise, self.player) \
                 .place_locked_item(self.create_item(Names.noise + " Boss Key"))
-            world.get_location("Defeat " + Names.fakepep, self.player)\
+            world.get_location("Defeat " + Names.fakepep, self.player) \
                 .place_locked_item(self.create_item(Names.fakepep + " Boss Key"))
+
+        if not self.multiworld.treasure_check[self.player].value:
+            for i in Locations.treasure_table.keys():
+                for j in Items.treasure_table.keys():
+                    if i == j:
+                        world.get_location(i, self.player) \
+                            .place_locked_item(self.create_item(j))
 
     def set_rules(self) -> None:
         set_rules(self.multiworld, self.player)

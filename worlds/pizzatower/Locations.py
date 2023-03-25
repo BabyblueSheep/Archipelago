@@ -7,6 +7,7 @@ from worlds.pizzatower import Names
 class LocationData(typing.NamedTuple):
     id: typing.Optional[int]
     region: str
+    treasure: bool = False
 
 
 class PizzaTowerTask(Location):
@@ -149,26 +150,31 @@ task_table = {
     "Escape " + Names.tower: LocationData(88210054, Names.tower),
 }
 
-secret_treasure_table = {
-    Names.entrance + " Secret Treasure": LocationData(8821051, Names.entrance),
-    Names.medieval + " Secret Treasure": LocationData(8821052, Names.medieval),
-    Names.ruin + " Secret Treasure": LocationData(8821053, Names.ruin),
-    Names.dungeon + " Secret Treasure": LocationData(8821054, Names.dungeon),
-    Names.badland + " Secret Treasure": LocationData(8821061, Names.badland),
-    Names.graveyard + " Secret Treasure": LocationData(8821062, Names.graveyard),
-    Names.farm + " Secret Treasure": LocationData(8821063, Names.farm),
-    Names.saloon + " Secret Treasure": LocationData(8821064, Names.saloon),
-    Names.plage + " Secret Treasure": LocationData(8821071, Names.plage),
-    Names.forest + " Secret Treasure": LocationData(8821072, Names.forest),
-    Names.space + " Secret Treasure": LocationData(8821073, Names.space),
-    Names.minigolf + " Secret Treasure": LocationData(8821074, Names.minigolf),
-    Names.street + " Secret Treasure": LocationData(8821081, Names.street),
-    Names.industrial + " Secret Treasure": LocationData(8821082, Names.industrial),
-    Names.sewer + " Secret Treasure": LocationData(8821083, Names.sewer),
-    Names.freezer + " Secret Treasure": LocationData(8821084, Names.freezer),
-    Names.chateau + " Secret Treasure": LocationData(8821091, Names.chateau),
-    Names.kidsparty + " Secret Treasure": LocationData(8821092, Names.kidsparty),
-    Names.war + " Secret Treasure": LocationData(8821093, Names.war),
+treasure_table = {
+    Names.entrance + " Secret Treasure": LocationData(88212011, Names.entrance, True),
+    Names.medieval + " Secret Treasure": LocationData(88212012, Names.medieval, True),
+    Names.ruin + " Secret Treasure": LocationData(88212013, Names.ruin, True),
+    Names.dungeon + " Secret Treasure": LocationData(88212014, Names.dungeon, True),
+    Names.badland + " Secret Treasure": LocationData(88212021, Names.badland, True),
+    Names.graveyard + " Secret Treasure": LocationData(88212022, Names.graveyard, True),
+    Names.farm + " Secret Treasure": LocationData(88212023, Names.farm, True),
+    Names.saloon + " Secret Treasure": LocationData(88212024, Names.saloon, True),
+    Names.plage + " Secret Treasure": LocationData(88212031, Names.plage, True),
+    Names.forest + " Secret Treasure": LocationData(88212032, Names.forest, True),
+    Names.space + " Secret Treasure": LocationData(88212033, Names.space, True),
+    Names.minigolf + " Secret Treasure": LocationData(88212034, Names.minigolf, True),
+    Names.street + " Secret Treasure": LocationData(88212041, Names.street, True),
+    Names.industrial + " Secret Treasure": LocationData(88212042, Names.industrial, True),
+    Names.sewer + " Secret Treasure": LocationData(88212043, Names.sewer, True),
+    Names.freezer + " Secret Treasure": LocationData(88212044, Names.freezer, True),
+    Names.chateau + " Secret Treasure": LocationData(88212051, Names.chateau, True),
+    Names.kidsparty + " Secret Treasure": LocationData(88212052, Names.kidsparty, True),
+    Names.war + " Secret Treasure": LocationData(88212053, Names.war),
+}
+
+location_table = {
+    **task_table,
+    **treasure_table
 }
 
 exclusion_table = {
