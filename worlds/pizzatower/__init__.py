@@ -94,19 +94,6 @@ class PizzaTowerWorld(World):
     def create_items(self) -> None:
         Items.create_all_items(self.multiworld, self.player)
 
-    def generate_early(self) -> None:
-        world = self.multiworld
-
-        if self.multiworld.boss_keys[self.player].value == 0:
-            pass
-            # world.push_precollected(self.create_item(Names.pepperman + " Boss Key"))
-            # world.push_precollected(self.create_item(Names.vigilante + " Boss Key"))
-            # world.push_precollected(self.create_item(Names.noise + " Boss Key"))
-            # world.push_precollected(self.create_item(Names.fakepep + " Boss Key"))
-
-        if self.multiworld.treasure_check[self.player].value:
-            pass
-
     def generate_basic(self) -> None:
         world = self.multiworld
 
