@@ -42,5 +42,5 @@ Maybe there could be checks for Lap 2 completion. I'm sure some people would wan
 Might also be nice to have an option to spawn at the John Pillar when you enter the level (maybe hold a button while entering?) so you can try again for lap 2 if need be
 
 
-add "buffers" for traps and junk so that it isnt lost
+add "buffers" for traps and junk so that it cant be lost
 automatically give points if you got toppins/treasures from another level/game so that a p rank is obtainable?
