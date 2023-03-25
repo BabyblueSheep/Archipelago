@@ -39,7 +39,8 @@ class PizzaTowerWorld(World):
     # required_client_version = (1, 0, 311)
 
     item_name_groups = {
-        "toppins": toppin_table.keys()
+        "toppins": toppin_table.keys(),
+        "treasures": treasure_table.keys()
     }
 
     def get_option(self, name):

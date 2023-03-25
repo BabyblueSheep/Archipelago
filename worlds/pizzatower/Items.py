@@ -55,7 +55,6 @@ def create_all_items(world: MultiWorld, player: int) -> None:
     world.itempool += [world.create_item("Super Taunt Charge", player) for i in range(junk_count)]
 
 
-
 toppin_table = {
     entrance + " Mushroom Toppin": ItemData(88201111, True),
     entrance + " Cheese Toppin": ItemData(88201211, True),
