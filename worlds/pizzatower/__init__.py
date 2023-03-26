@@ -28,7 +28,7 @@ class PizzaTowerWorld(World):
 
     game: str = "Pizza Tower"
     option_definitions = pizza_tower_options
-    topology_present = True
+    topology_present = False
     web = PizzaTowerWeb()
 
     item_name_to_id = {name: data.code for name, data in item_table.items()}
@@ -36,7 +36,7 @@ class PizzaTowerWorld(World):
 
     data_version = 0
 
-    # required_client_version = (1, 0, 311)
+    required_client_version = (1, 0, 311)
 
     item_name_groups = {
         "toppins": toppin_table.keys(),
@@ -47,15 +47,7 @@ class PizzaTowerWorld(World):
         return getattr(self.multiworld, name)[self.player].value
 
     def fill_slot_data(self):
-        slot_data = {
-            "seed": self.multiworld.seed_name,
-            "boss_keys": self.multiworld.boss_keys[self.player].value,
-            "level_shuffle": self.multiworld.shuffle_level[self.player].value,
-            "rank_needed": self.multiworld.rank_needed[self.player].value,
-            "judgement": self.multiworld.goal[self.player].value,
-            "john": self.multiworld.john[self.player].value,
-            "death_link": self.multiworld.death_link[self.player].value,
-        }
+        slot_data = {}
 
         for option_name in self.option_definitions:
             slot_data[option_name] = self.get_option(option_name)
@@ -63,20 +55,7 @@ class PizzaTowerWorld(World):
         return slot_data
 
     def create_item(self, name: str) -> PizzaTowerItem:
-        item_data = item_table[name]
-        if item_data.required:
-            classification = ItemClassification.progression
-        elif item_data.treasure and self.multiworld.treasure_check[self.player].value:
-            if self.multiworld.john[self.player].value:
-                classification = ItemClassification.progression
-            else:
-                classification = ItemClassification.useful
-        elif item_data.trap:
-            classification = ItemClassification.trap
-        else:
-            classification = ItemClassification.filler
-        item = PizzaTowerItem(name, classification, item_data.code, self.player)
-        return item
+        return Items.create_item(self.multiworld, name, self.player)
 
     def create_regions(self) -> None:
         def create_region(region_name: str, exits=[]):
@@ -95,6 +74,9 @@ class PizzaTowerWorld(World):
     def create_items(self) -> None:
         Items.create_all_items(self.multiworld, self.player)
 
+    def set_rules(self) -> None:
+        set_rules(self.multiworld, self.player)
+
     def generate_basic(self) -> None:
         world = self.multiworld
 
@@ -111,12 +93,10 @@ class PizzaTowerWorld(World):
             world.get_location("Defeat " + Names.fakepep, self.player) \
                 .place_locked_item(self.create_item(Names.fakepep + " Boss Key"))
 
-        if not self.multiworld.treasure_check[self.player].value:
-            for i in Locations.treasure_table.keys():
-                for j in Items.treasure_table.keys():
-                    if i == j:
-                        world.get_location(i, self.player) \
-                            .place_locked_item(self.create_item(j))
-
-    def set_rules(self) -> None:
-        set_rules(self.multiworld, self.player)
+        player_treasure_checked = self.multiworld.treasure_check[self.player].value
+        if not player_treasure_checked:
+            for loc_name, loc_info in Locations.treasure_table.items():
+                if loc_name in Items.treasure_table:
+                    item_name = loc_name
+                    item = self.create_item(item_name)
+                    self.world.get_location(loc_name, self.player).place_locked_item(item)

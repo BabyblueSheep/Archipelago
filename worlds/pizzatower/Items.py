@@ -17,6 +17,23 @@ class PizzaTowerItem(Item):
     game: str = "Pizza Tower"
 
 
+def create_item(world: MultiWorld, name: str, player: int) -> PizzaTowerItem:
+    item_data = item_table[name]
+    if item_data.required:
+        classification = ItemClassification.progression
+    elif item_data.treasure and world.treasure_check[player].value:
+        if world.john[player].value:
+            classification = ItemClassification.progression
+        else:
+            classification = ItemClassification.useful
+    elif item_data.trap:
+        classification = ItemClassification.trap
+    else:
+        classification = ItemClassification.filler
+    item = PizzaTowerItem(name, classification, item_data.code, player)
+    return item
+
+
 def create_all_items(world: MultiWorld, player: int) -> None:
     exclude = [item for item in world.precollected_items[player]]
     exclude.append(world.create_item("Victory", player))
@@ -185,7 +202,7 @@ treasure_table = {
     freezer + " Secret Treasure": ItemData(88202044, False, True),
     chateau + " Secret Treasure": ItemData(88202051, False, True),
     kidsparty + " Secret Treasure": ItemData(88202052, False, True),
-    war + " Secret Treasure": ItemData(88202053, war),
+    war + " Secret Treasure": ItemData(88202053, False, True),
 }
 
 junk_table = {
