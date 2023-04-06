@@ -159,6 +159,8 @@ components: Iterable[Component] = (
     # Zillion
     Component('Zillion Client', 'ZillionClient',
               file_identifier=SuffixIdentifier('.apzl')),
+    # Pizza Tower
+    Component('Pizza Tower Client', 'PizzaTowerClient'),
     # Functions
     Component('Open host.yaml', func=open_host_yaml),
     Component('Open Patch', func=open_patch),
