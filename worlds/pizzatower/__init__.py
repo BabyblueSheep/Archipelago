@@ -99,4 +99,4 @@ class PizzaTowerWorld(World):
                 if loc_name in Items.treasure_table:
                     item_name = loc_name
                     item = self.create_item(item_name)
-                    self.world.get_location(loc_name, self.player).place_locked_item(item)
+                    self.multiworld.get_location(loc_name, self.player).place_locked_item(item)

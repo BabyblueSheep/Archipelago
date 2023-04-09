@@ -21,7 +21,6 @@ class PizzaTowerContext(CommonContext):
 
     def __init__(self, server_address, password):
         super().__init__(server_address, password)
-        self.game = "Pizza Tower"
         self.got_deathlink = False
         self.syncing = False
 
