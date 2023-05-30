@@ -14,8 +14,16 @@ class BaseTrapWeight(Choice):
 
 
 class TimerTrap(BaseTrapWeight):
-    """Likelihood of a receiving a trap which starts Pizza Time early."""
+    """Likelihood of a receiving a trap which shortens the timer during Pizza Time."""
     display_name = "Timer Trap Weight"
+
+
+class TimerTrapReduce(Range):
+    """The amount of seconds reduced when receiving a Timer Trap."""
+    display_name = "Timer Trap Time Reduced"
+    range_start = 5
+    range_end = 60
+    default = 10
 
 
 class StunTrap(BaseTrapWeight):
@@ -94,6 +102,7 @@ pizza_tower_options: typing.Dict[str, type(Option)] = {
     "treasure_check": TowerSecretTreasure,
 
     "timer_trap": TimerTrap,
+    "timer_reduce": TimerTrapReduce,
     "stun_trap": StunTrap,
     "transformation_trap": TransformationTrap,
     "trap_fill_percentage": TrapFillPercentage,
