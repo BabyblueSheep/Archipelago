@@ -36,6 +36,14 @@ class TransformationTrap(BaseTrapWeight):
     display_name = "Transformation Trap Weight"
 
 
+class TransformationTrapTime(Range):
+    """The amount of seconds a transformation trap lasts."""
+    display_name = "Transformation Trap Time"
+    range_start = 2
+    range_end = 30
+    default = 10
+
+
 class TrapFillPercentage(Range):
     """Replace a percentage of junk items in the item pool with random traps."""
     display_name = "Trap Fill Percentage"
@@ -105,6 +113,7 @@ pizza_tower_options: typing.Dict[str, type(Option)] = {
     "timer_reduce": TimerTrapReduce,
     "stun_trap": StunTrap,
     "transformation_trap": TransformationTrap,
+    "transformation_time": TransformationTrapTime,
     "trap_fill_percentage": TrapFillPercentage,
 
     "shuffle_level": LevelShuffle,

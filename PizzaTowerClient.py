@@ -1,10 +1,15 @@
 import asyncio
+import os
+import shutil
+import sys
+
 import Utils
+from NetUtils import NetworkItem
 
 if __name__ == "__main__":
     Utils.init_logging("PizzaTowerClient", exception_logger="Client")
 
-from CommonClient import ClientCommandProcessor, CommonContext, server_loop, gui_enabled, get_base_parser
+from CommonClient import ClientCommandProcessor, CommonContext, server_loop, gui_enabled, get_base_parser, logger
 
 
 class PizzaTowerCommandProcessor(ClientCommandProcessor):
@@ -23,12 +28,47 @@ class PizzaTowerContext(CommonContext):
         super().__init__(server_address, password)
         self.got_deathlink = False
         self.syncing = False
+        self.awaiting_bridge = False
+        # self.game_communication_path: files go in this path to pass data between us and the actual game
+        if "localappdata" in os.environ:
+            self.game_communication_path = os.path.expandvars(r"%appdata%/PizzaTower_AP/Archipelago")
+        else:
+            # not windows. game is an exe so let's see if wine might be around to run it
+            if "WINEPREFIX" in os.environ:
+                wineprefix = os.environ["WINEPREFIX"]
+            elif shutil.which("wine") or shutil.which("wine-stable"):
+                wineprefix = os.path.expanduser(
+                    "~/.wine")  # default root of wine system data, deep in which is app data
+            else:
+                msg = "PizzaTowerClient couldn't detect system type. Unable to infer required game_communication_path"
+                logger.error("Error: " + msg)
+                Utils.messagebox("Error", msg, error=True)
+                sys.exit(1)
+            self.game_communication_path = os.path.join(
+                wineprefix,
+                "drive_c",
+                os.path.expandvars("users/$USER/Local Settings/Application Data/PizzaTower_AP/Archipelago"))
 
     async def server_auth(self, password_requested: bool = False):
         if password_requested and not self.password:
             await super(PizzaTowerContext, self).server_auth(password_requested)
         await self.get_username()
         await self.send_connect()
+
+    @property
+    def endpoints(self):
+        if self.server:
+            return [self.server]
+        else:
+            return []
+
+    def on_package(self, cmd: str, args: dict):
+        if cmd in {"ReceivedItems"}:
+            start_index = args["index"]
+            if start_index != len(self.items_received):
+                for item in args['items']:
+                    filename = f"{str(NetworkItem(*item).item)}{str(self.player_names.get(NetworkItem(*item).player))}.item"
+                    open(os.path.join(self.game_communication_path, filename), 'x')
 
     def run_gui(self):
         """Import kivy UI system and start running it as self.ui_task."""
