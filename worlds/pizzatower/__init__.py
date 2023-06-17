@@ -23,12 +23,12 @@ class PizzaTowerWeb(WebWorld):
 
 
 class PizzaTowerWorld(World):
-    """Pizza Tower is a fast-paced 2D platformer inspired by the Wario Land series, in which you progress through levels
-    in the titular Pizza Tower, incorporating a tight combo system, multiple types of collectibles, escape sequences, and bosses."""
+    """Pizza Tower is a fast-paced 2D platformer inspired by the Wario Land series, in which you progress through
+    levels in the titular Pizza Tower, incorporating a tight combo system, multiple types of collectibles,
+    escape sequences, and bosses."""
 
-    game: str = "Pizza Tower"
+    game = "Pizza Tower"
     option_definitions = pizza_tower_options
-    topology_present = False
     web = PizzaTowerWeb()
 
     item_name_to_id = {name: data.code for name, data in item_table.items()}

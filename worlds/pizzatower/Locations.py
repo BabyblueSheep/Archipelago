@@ -177,6 +177,4 @@ location_table = {
     **treasure_table
 }
 
-exclusion_table = {
 
-}

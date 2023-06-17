@@ -67,8 +67,10 @@ class PizzaTowerContext(CommonContext):
             start_index = args["index"]
             if start_index != len(self.items_received):
                 for item in args['items']:
-                    filename = f"{str(NetworkItem(*item).item)}{str(self.player_names.get(NetworkItem(*item).player))}.item"
-                    open(os.path.join(self.game_communication_path, filename), 'x')
+                    filename = f"{str(NetworkItem(*item).player)}apPlayerName{str(NetworkItem(*item).location)}.item"
+                    with open(os.path.join(self.game_communication_path, filename), 'w') as f:
+                        f.write(str(NetworkItem(*item).item))
+                        f.close()
 
     def run_gui(self):
         """Import kivy UI system and start running it as self.ui_task."""
