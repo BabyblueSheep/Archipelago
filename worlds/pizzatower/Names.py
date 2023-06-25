@@ -32,3 +32,10 @@ vigilante = "The Vigilante"
 noise = "The Noise"
 fakepep = "Fake Peppino"
 pizzaface = "Pizzaface"
+
+
+hub1 = "Tower Lobby"
+hub2 = "Western District"
+hub3 = "Vacation Resort"
+hub4 = "Slum"
+hub5 = "Staff Only"

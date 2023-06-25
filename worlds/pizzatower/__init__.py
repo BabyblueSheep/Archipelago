@@ -1,11 +1,12 @@
-from BaseClasses import Item, MultiWorld, Tutorial, ItemClassification, Entrance, Region
-from .Regions import tower_regions
+from BaseClasses import Tutorial
 from .Rules import set_rules
 from ..AutoWorld import World, WebWorld
 from .Options import pizza_tower_options
 from .Items import item_table, PizzaTowerItem, toppin_table
-from .Locations import PizzaTowerTask, location_table, treasure_table
-from . import Options, Items, Locations, Regions, Rules, Names
+from .Locations import PizzaTowerLocation, location_table, treasure_table
+from . import Options, Items, Locations, Regions, Rules
+from .Names import *
+from .Regions import create_regions
 
 
 class PizzaTowerWeb(WebWorld):
@@ -39,8 +40,8 @@ class PizzaTowerWorld(World):
     required_client_version = (0, 3, 9)
 
     item_name_groups = {
-        "toppins": toppin_table.keys(),
-        "treasures": treasure_table.keys()
+        "toppins": set(toppin_table.keys()),
+        "treasures": set(treasure_table.keys())
     }
 
     def get_option(self, name):
@@ -58,18 +59,7 @@ class PizzaTowerWorld(World):
         return Items.create_item(self.multiworld, name, self.player)
 
     def create_regions(self) -> None:
-        def create_region(region_name: str, exits=[]):
-            ret = Region(region_name, self.player, self.multiworld)
-            for loc_name, loc_data in location_table.items():
-                if loc_data.region != region_name:
-                    continue
-                ret.locations.append(PizzaTowerTask(self.player, loc_name, loc_data.id, ret))
-            for exit in exits:
-                ret.exits.append(Entrance(self.player, exit, ret))
-            return ret
-
-        self.multiworld.regions += [create_region(*r) for r in tower_regions]
-        Regions.link_tower_structures(self.multiworld, self.player)
+        create_regions(self.multiworld, self.player)
 
     def create_items(self) -> None:
         Items.create_all_items(self.multiworld, self.player)
@@ -79,24 +69,9 @@ class PizzaTowerWorld(World):
 
     def generate_basic(self) -> None:
         world = self.multiworld
+        victory_item = world.create_item("Victory", self.player)
+        self.multiworld.get_location("Escape " + Names.tower, self.player).place_locked_item(victory_item)
 
-        world.get_location("Escape " + Names.tower, self.player) \
-            .place_locked_item(self.create_item("Victory"))
-
-        if self.multiworld.boss_keys[self.player].value == 0:
-            world.get_location("Defeat " + Names.pepperman, self.player) \
-                .place_locked_item(self.create_item(Names.pepperman + " Boss Key"))
-            world.get_location("Defeat " + Names.vigilante, self.player) \
-                .place_locked_item(self.create_item(Names.vigilante + " Boss Key"))
-            world.get_location("Defeat " + Names.noise, self.player) \
-                .place_locked_item(self.create_item(Names.noise + " Boss Key"))
-            world.get_location("Defeat " + Names.fakepep, self.player) \
-                .place_locked_item(self.create_item(Names.fakepep + " Boss Key"))
-
-        player_treasure_checked = self.multiworld.treasure_check[self.player].value
-        if not player_treasure_checked:
-            for loc_name, loc_info in Locations.treasure_table.items():
-                if loc_name in Items.treasure_table:
-                    item_name = loc_name
-                    item = self.create_item(item_name)
-                    self.multiworld.get_location(loc_name, self.player).place_locked_item(item)
+        if world.boss_keys[self.player].value == 0:
+            pepperman_key = world.create_item(pepperman + " Boss Key", self.player)
+            self.multiworld.get_location("Defeat " + Names.pepperman, self.player).place_locked_item(pepperman_key)

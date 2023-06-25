@@ -1,170 +1,125 @@
-from . import Names
+from BaseClasses import MultiWorld, Region, Entrance
+from .Names import *
+from .Locations import location_table, LocationData, PizzaTowerLocation
 
 
-def create_region():
-    pass
+def create_region(world: MultiWorld, player: int, name: str, exits=None):
+    region = Region(name, player, world)
+    loc_name: str
+    location: LocationData
+    for loc_name in location_table:
+        if location_table[loc_name].region == name:
+            if (not location_table[loc_name].treasure) or world.treasure_check[player].value:
+                region.locations.append(PizzaTowerLocation(player, loc_name, location_table[loc_name].id, region))
+
+    if exits:
+        for _exit in exits:
+            region.exits.append(Entrance(player, _exit, region))
+
+    return region
 
 
-def create_regions():
-    pass
+def create_regions(world: MultiWorld, player: int):
+    if world.shuffle_level[player].value:
+        pass
+    else:
+        for region_name in pizza_tower_regions:
+            world.regions.append(create_region(world, player, region_name, pizza_tower_regions[region_name]))
+        for region_exit in mandatory_connections:
+            world.get_entrance(region_exit, player)\
+                .connect(world.get_region(mandatory_connections[region_exit], player))
+        for region_exit in default_connections:
+            world.get_entrance(region_exit, player)\
+                .connect(world.get_region(default_connections[region_exit], player))
 
 
-floor_1_regions = [Names.tutorial, Names.entrance, Names.medieval, Names.ruin, Names.dungeon]
-floor_2_regions = [Names.badland, Names.graveyard, Names.farm, Names.saloon]
-floor_3_regions = [Names.plage, Names.forest, Names.space, Names.minigolf]
-floor_4_regions = [Names.street, Names.industrial, Names.sewer, Names.freezer]
-floor_5_regions = [Names.chateau, Names.kidsparty, Names.war, Names.tower]
+pizza_tower_regions = {
+    "Menu": {"New File"},
+    hub1: {hub1 + " Level 0", hub1 + " Level 1", hub1 + " Level 2", hub1 + " Level 3", hub1 + " Level 4",
+           hub1 + " Boss", hub1 + " Exit"},
+    hub2: {hub2 + " Level 1", hub2 + " Level 2", hub2 + " Level 3", hub2 + " Level 4",
+           hub2 + " Boss", hub2 + " Exit"},
+    hub3: {hub3 + " Level 1", hub3 + " Level 2", hub3 + " Level 3", hub3 + " Level 4",
+           hub3 + " Boss", hub3 + " Exit"},
+    hub4: {hub4 + " Level 1", hub4 + " Level 2", hub4 + " Level 3", hub4 + " Level 4",
+           hub4 + " Boss", hub4 + " Exit"},
+    hub5: {hub5 + " Level 1", hub5 + " Level 2", hub5 + " Level 3", hub5 + " Level 4",
+           hub5 + " Boss"},
 
-tower_regions = [
-    ("Menu", ["New Save"]),
-    ("Tower Lobby", [
-        "Tower Lobby Stage 0", "Tower Lobby Stage 1", "Tower Lobby Stage 2", "Tower Lobby Stage 3",
-        "Tower Lobby Stage 4",
-        Names.pepperman + " Stage"]),
-    ("Western District", [
-        "Western District Stage 1", "Western District Stage 2", "Western District Stage 3", "Western District Stage 4",
-        Names.vigilante + " Stage"]),
-    ("Vacation Resort", [
-        "Vacation Resort Stage 1", "Vacation Resort Stage 2", "Vacation Resort Stage 3", "Vacation Resort Stage 4",
-        Names.noise + " Stage"]),
-    ("Slum", [
-        "Slum Stage 1", "Slum Stage 2", "Slum Stage 3", "Slum Stage 4",
-        Names.fakepep + " Stage"]),
-    ("Staff Only", [
-        "Staff Only Stage 1", "Staff Only Stage 2", "Staff Only Stage 3", "Staff Only Stage 4",
-        Names.pizzaface + " Stage"]),
-    ("Victory", []),
+    tutorial: {},
+    entrance: {},
+    medieval: {},
+    ruin: {},
+    dungeon: {},
+    pepperman: {},
 
-    (Names.tutorial, []),
+    badland: {},
+    graveyard: {},
+    farm: {},
+    saloon: {},
+    vigilante: {},
 
-    (Names.entrance, []),
-    (Names.medieval, []),
-    (Names.ruin, []),
-    (Names.dungeon, []),
+    plage: {},
+    forest: {},
+    space: {},
+    minigolf: {},
+    noise: {},
 
-    (Names.badland, []),
-    (Names.graveyard, []),
-    (Names.farm, []),
-    (Names.saloon, []),
+    street: {},
+    industrial: {},
+    sewer: {},
+    freezer: {},
+    fakepep: {},
 
-    (Names.plage, []),
-    (Names.forest, []),
-    (Names.space, []),
-    (Names.minigolf, []),
-
-    (Names.street, []),
-    (Names.industrial, []),
-    (Names.sewer, []),
-    (Names.freezer, []),
-
-    (Names.chateau, []),
-    (Names.kidsparty, []),
-    (Names.war, []),
-    (Names.tower, []),
-]
-
-mandatory_connections = {
-    ("New Save", "Tower Lobby"),
-    (Names.pepperman + " Stage", "Western District"),
-    (Names.vigilante + " Stage", "Vacation Resort"),
-    (Names.noise + " Stage", "Slum"),
-    (Names.fakepep + " Stage", "Staff Only"),
-    (Names.pizzaface + " Stage", "Victory"),
-
-    ("Tower Lobby Stage 0", Names.tutorial),
-    ("Staff Only Stage 4", Names.tower),
+    chateau: {},
+    kidsparty: {},
+    war: {},
+    pizzaface: {"Pizzaface Shower Hall"},
+    tower: {}
 }
 
-default_connections = [
-    ("Tower Lobby Stage 1", Names.entrance),
-    ("Tower Lobby Stage 2", Names.medieval),
-    ("Tower Lobby Stage 3", Names.ruin),
-    ("Tower Lobby Stage 4", Names.dungeon),
+mandatory_connections = {
+    "New File": hub1,
+    hub1 + " Level 0": tutorial,
+    hub1 + " Boss": pepperman,
+    hub1 + " Exit": hub2,
 
-    ("Western District Stage 1", Names.badland),
-    ("Western District Stage 2", Names.graveyard),
-    ("Western District Stage 3", Names.farm),
-    ("Western District Stage 4", Names.saloon),
+    hub2 + " Boss": vigilante,
+    hub2 + " Exit": hub3,
 
-    ("Western District Stage 1", Names.badland),
-    ("Western District Stage 2", Names.graveyard),
-    ("Western District Stage 3", Names.farm),
-    ("Western District Stage 4", Names.saloon),
+    hub3 + " Boss": noise,
+    hub3 + " Exit": hub4,
 
-    ("Vacation Resort Stage 1", Names.plage),
-    ("Vacation Resort Stage 2", Names.forest),
-    ("Vacation Resort Stage 3", Names.space),
-    ("Vacation Resort Stage 4", Names.minigolf),
+    hub4 + " Boss": fakepep,
+    hub4 + " Exit": hub5,
 
-    ("Slum Stage 1", Names.street),
-    ("Slum Stage 2", Names.industrial),
-    ("Slum Stage 3", Names.sewer),
-    ("Slum Stage 4", Names.freezer),
+    hub5 + " Boss": pizzaface,
+    "Pizzaface Shower Hall": tower,
+    hub5 + " Level 4": tower,
+}
 
-    ("Staff Only Stage 1", Names.chateau),
-    ("Staff Only Stage 2", Names.kidsparty),
-    ("Staff Only Stage 3", Names.war)
-]
+default_connections = {
+    hub1 + " Level 1": entrance,
+    hub1 + " Level 2": medieval,
+    hub1 + " Level 3": ruin,
+    hub1 + " Level 4": dungeon,
 
-illegal_connections = {}
+    hub2 + " Level 1": badland,
+    hub2 + " Level 2": graveyard,
+    hub2 + " Level 3": farm,
+    hub2 + " Level 4": saloon,
 
+    hub3 + " Level 1": plage,
+    hub3 + " Level 2": forest,
+    hub3 + " Level 3": space,
+    hub3 + " Level 4": minigolf,
 
-def link_tower_structures(world, player):  # Directly taken from Minecraft's region connection
-    # Link mandatory connections first
-    for (exit, region) in mandatory_connections:
-        world.get_entrance(exit, player).connect(world.get_region(region, player))
+    hub4 + " Level 1": street,
+    hub4 + " Level 2": industrial,
+    hub4 + " Level 3": sewer,
+    hub4 + " Level 4": freezer,
 
-    # Get all unpaired exits and all regions without entrances (except the Menu)
-    # This function is destructive on these lists.
-    exits = [exit.name for r in world.regions if r.player == player for exit in r.exits if
-             exit.connected_region is None]
-    structs = [r.name for r in world.regions if r.player == player and r.entrances == [] and r.name != 'Menu']
-    exits_spoiler = exits[:]  # copy the original order for the spoiler log
-    try:
-        assert len(exits) == len(structs)
-    except AssertionError as e:  # this should never happen
-        raise Exception(
-            f"Could not obtain equal numbers of Pizza Tower exits and structures for player {player} ({world.player_name[player]})")
-
-    pairs = {}
-
-    def set_pair(exit, struct):
-        if (exit in exits) and (struct in structs) and (exit not in illegal_connections.get(struct, [])):
-            pairs[exit] = struct
-            exits.remove(exit)
-            structs.remove(struct)
-        else:
-            raise Exception(f"Invalid connection: {exit} => {struct} for player {player} ({world.player_name[player]})")
-
-    # Connect plando structures first
-    if world.plando_connections[player]:
-        for conn in world.plando_connections[player]:
-            set_pair(conn.entrance, conn.exit)
-
-    # The algorithm tries to place the most restrictive structures first. This algorithm always works on the
-    # relatively small set of restrictions here, but does not work on all possible inputs with valid configurations.
-    if world.shuffle_level[player]:
-        structs.sort(reverse=True, key=lambda s: len(illegal_connections.get(s, [])))
-        for struct in structs[:]:
-            try:
-                exit = world.random.choice([e for e in exits if e not in illegal_connections.get(struct, [])])
-            except IndexError:
-                raise Exception(
-                    f"No valid structure placements remaining for player {player} ({world.player_name[player]})")
-            set_pair(exit, struct)
-    else:  # write remaining default connections
-        for (exit, struct) in default_connections:
-            if exit in exits:
-                set_pair(exit, struct)
-
-    # Make sure we actually paired everything; might fail if plando
-    try:
-        assert len(exits) == len(structs) == 0
-    except AssertionError:
-        raise Exception(
-            f"Failed to connect all Pizza Tower structures for player {player} ({world.player_name[player]})")
-
-    for exit in exits_spoiler:
-        world.get_entrance(exit, player).connect(world.get_region(pairs[exit], player))
-        if world.shuffle_level[player] or world.plando_connections[player]:
-            world.spoiler.set_entrance(exit, pairs[exit], 'entrance', player)
+    hub5 + " Level 1": chateau,
+    hub5 + " Level 2": kidsparty,
+    hub5 + " Level 3": war,
+}

@@ -53,7 +53,7 @@ def create_all_items(world: MultiWorld, player: int) -> None:
             if item not in exclude:
                 world.itempool.append(item)
 
-    junk_count = 16
+    junk_count = 21
     trap_weights = []
     trap_weights += (["Stun Trap"] * world.timer_trap[player].value)
     trap_weights += (["Timer Trap"] * world.stun_trap[player].value)
