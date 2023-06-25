@@ -70,8 +70,14 @@ class PizzaTowerWorld(World):
     def generate_basic(self) -> None:
         world = self.multiworld
         victory_item = world.create_item("Victory", self.player)
-        self.multiworld.get_location("Escape " + Names.tower, self.player).place_locked_item(victory_item)
+        self.multiworld.get_location("Escape " + tower, self.player).place_locked_item(victory_item)
 
         if world.boss_keys[self.player].value == 0:
             pepperman_key = world.create_item(pepperman + " Boss Key", self.player)
-            self.multiworld.get_location("Defeat " + Names.pepperman, self.player).place_locked_item(pepperman_key)
+            self.multiworld.get_location("Defeat " + pepperman, self.player).place_locked_item(pepperman_key)
+            vigilante_key = world.create_item(vigilante + " Boss Key", self.player)
+            self.multiworld.get_location("Defeat " + vigilante, self.player).place_locked_item(vigilante_key)
+            noise_key = world.create_item(noise + " Boss Key", self.player)
+            self.multiworld.get_location("Defeat " + noise, self.player).place_locked_item(noise_key)
+            fakepep_key = world.create_item(fakepep + " Boss Key", self.player)
+            self.multiworld.get_location("Defeat " + fakepep, self.player).place_locked_item(fakepep_key)

@@ -37,6 +37,12 @@ def create_all_items(world: MultiWorld, player: int) -> None:
     exclude = [item for item in world.precollected_items[player]]
     exclude.append(world.create_item("Victory", player))
 
+    if world.boss_keys[player].value == 0:
+        exclude.append(world.create_item(pepperman + " Boss Key", player))
+        exclude.append(world.create_item(vigilante + " Boss Key", player))
+        exclude.append(world.create_item(noise + " Boss Key", player))
+        exclude.append(world.create_item(fakepep + " Boss Key", player))
+
     for name, data in important_table.items():
         item = world.create_item(name, player)
         if item not in exclude:
@@ -53,7 +59,7 @@ def create_all_items(world: MultiWorld, player: int) -> None:
             if item not in exclude:
                 world.itempool.append(item)
 
-    junk_count = 21
+    junk_count = 20
     trap_weights = []
     trap_weights += (["Stun Trap"] * world.timer_trap[player].value)
     trap_weights += (["Timer Trap"] * world.stun_trap[player].value)

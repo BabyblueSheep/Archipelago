@@ -20,14 +20,21 @@ def create_region(world: MultiWorld, player: int, name: str, exits=None):
 
 
 def create_regions(world: MultiWorld, player: int):
+    for region_name in pizza_tower_regions:
+        world.regions.append(create_region(world, player, region_name, pizza_tower_regions[region_name]))
+    for region_exit in mandatory_connections:
+        world.get_entrance(region_exit, player) \
+            .connect(world.get_region(mandatory_connections[region_exit], player))
+
     if world.shuffle_level[player].value:
-        pass
-    else:
-        for region_name in pizza_tower_regions:
-            world.regions.append(create_region(world, player, region_name, pizza_tower_regions[region_name]))
-        for region_exit in mandatory_connections:
+        entrances = list(default_connections.keys())
+        regions = list(default_connections.values())
+        world.random.shuffle(regions)
+        randomised_connections = dict(zip(entrances, regions))
+        for region_exit in randomised_connections:
             world.get_entrance(region_exit, player)\
-                .connect(world.get_region(mandatory_connections[region_exit], player))
+                .connect(world.get_region(randomised_connections[region_exit], player))
+    else:
         for region_exit in default_connections:
             world.get_entrance(region_exit, player)\
                 .connect(world.get_region(default_connections[region_exit], player))
