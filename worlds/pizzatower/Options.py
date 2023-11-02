@@ -103,11 +103,23 @@ class BossKeys(Choice):
     option_both = 2
 
 
+class PumpkinHunt(Toggle):
+    """Whether Pumpkin Hunt should be available"""
+    display_name = "Pumpkin Hunt"
+
+
+class TowerSecretEye(Toggle):
+    """Whether finding any of the 3 secret eyes in a level counts as a check."""
+    display_name = "Secrets"
+
+
 pizza_tower_options: typing.Dict[str, type(Option)] = {
     "death_link": DeathLink,
 
     "boss_keys": BossKeys,
     "treasure_check": TowerSecretTreasure,
+    "secret_eye_check": TowerSecretEye,
+    "pumpkin_hunt": PumpkinHunt,
 
     "timer_trap": TimerTrap,
     "timer_reduce": TimerTrapReduce,

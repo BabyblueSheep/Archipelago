@@ -2,8 +2,8 @@ from BaseClasses import Tutorial
 from .Rules import set_rules
 from ..AutoWorld import World, WebWorld
 from .Options import pizza_tower_options
-from .Items import item_table, PizzaTowerItem, toppin_table
-from .Locations import PizzaTowerLocation, location_table, treasure_table
+from .Items import item_table, PizzaTowerItem, toppin_table, pumpkin_table, treasure_table
+from .Locations import PizzaTowerLocation, location_table
 from . import Options, Items, Locations, Regions, Rules
 from .Names import *
 from .Regions import create_regions
@@ -37,11 +37,12 @@ class PizzaTowerWorld(World):
 
     data_version = 0
 
-    required_client_version = (0, 3, 9)
+    required_client_version = (0, 4, 3)
 
     item_name_groups = {
         "toppins": set(toppin_table.keys()),
-        "treasures": set(treasure_table.keys())
+        "treasures": set(treasure_table.keys()),
+        "pumpkins": set(pumpkin_table.keys())
     }
 
     def get_option(self, name):

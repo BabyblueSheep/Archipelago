@@ -9,7 +9,10 @@ def create_region(world: MultiWorld, player: int, name: str, exits=None):
     location: LocationData
     for loc_name in location_table:
         if location_table[loc_name].region == name:
-            if (not location_table[loc_name].treasure) or world.treasure_check[player].value:
+            is_treasure_allowed = (not location_table[loc_name].treasure) or world.treasure_check[player].value
+            is_secret_allowed = (not location_table[loc_name].secret) or world.secret_eye_check[player].value
+            is_pumpkin_allowed = (not location_table[loc_name].pumpkin) or world.pumpkin_hunt[player].value
+            if is_treasure_allowed and is_secret_allowed and is_pumpkin_allowed:
                 region.locations.append(PizzaTowerLocation(player, loc_name, location_table[loc_name].id, region))
 
     if exits:
@@ -43,7 +46,8 @@ def create_regions(world: MultiWorld, player: int):
 pizza_tower_regions = {
     "Menu": {"New File"},
     hub1: {hub1 + " Level 0", hub1 + " Level 1", hub1 + " Level 2", hub1 + " Level 3", hub1 + " Level 4",
-           hub1 + " Boss", hub1 + " Exit"},
+           hub1 + " Boss", hub1 + " Exit",
+           trickytreat + " Entrance", secretlevel + " Entrance"},
     hub2: {hub2 + " Level 1", hub2 + " Level 2", hub2 + " Level 3", hub2 + " Level 4",
            hub2 + " Boss", hub2 + " Exit"},
     hub3: {hub3 + " Level 1", hub3 + " Level 2", hub3 + " Level 3", hub3 + " Level 4",
@@ -82,7 +86,10 @@ pizza_tower_regions = {
     kidsparty: {},
     war: {},
     pizzaface: {"Pizzaface Shower Hall"},
-    tower: {}
+    tower: {},
+
+    trickytreat: {},
+    secretlevel: {},
 }
 
 mandatory_connections = {
@@ -129,4 +136,7 @@ default_connections = {
     hub5 + " Level 1": chateau,
     hub5 + " Level 2": kidsparty,
     hub5 + " Level 3": war,
+
+    trickytreat + " Entrance": trickytreat,
+    secretlevel + " Entrance": secretlevel,
 }

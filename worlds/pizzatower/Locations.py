@@ -8,6 +8,8 @@ class LocationData(typing.NamedTuple):
     id: typing.Optional[int]
     region: str
     treasure: bool = False
+    secret: bool = False
+    pumpkin: bool = False
 
 
 class PizzaTowerLocation(Location):
@@ -148,6 +150,9 @@ task_table = {
     "Escape " + kidsparty:            LocationData(88210052, kidsparty),
     "Escape " + war:                  LocationData(88210053, war),
     "Escape " + tower:                LocationData(88210054, tower),
+
+    "Escape " + secretlevel:          LocationData(88210091, secretlevel),
+    "Escape " + trickytreat:          LocationData(88210092, trickytreat),
 }
 
 treasure_table = {
@@ -172,7 +177,105 @@ treasure_table = {
     war + " Secret Treasure":         LocationData(88212053, war, True),
 }
 
+pumpkin_table = {
+    entrance + " Pumpkin":          LocationData(88213011, entrance, False, False, True),
+    medieval + " Pumpkin":          LocationData(88213012, medieval, False, False, True),
+    ruin + " Pumpkin":              LocationData(88213013, ruin, False, False, True),
+    dungeon + " Pumpkin":           LocationData(88213014, dungeon, False, False, True),
+    badland + " Pumpkin":           LocationData(88213021, badland, False, False, True),
+    graveyard + " Pumpkin":         LocationData(88213022, graveyard, False, False, True),
+    farm + " Pumpkin":              LocationData(88213023, farm, False, False, True),
+    saloon + " Pumpkin":            LocationData(88213024, saloon, False, False, True),
+    plage + " Pumpkin":             LocationData(88213031, plage, False, False, True),
+    forest + " Pumpkin":            LocationData(88213032, forest, False, False, True),
+    space + " Pumpkin":             LocationData(88213033, space, False, False, True),
+    minigolf + " Pumpkin":          LocationData(88213034, minigolf, False, False, True),
+    street + " Pumpkin":            LocationData(88213041, street, False, False, True),
+    industrial + " Pumpkin":        LocationData(88213042, industrial, False, False, True),
+    sewer + " Pumpkin":             LocationData(88213043, sewer, False, False, True),
+    freezer + " Pumpkin":           LocationData(88213044, freezer, False, False, True),
+    chateau + " Pumpkin":           LocationData(88213051, chateau, False, False, True),
+    kidsparty + " Pumpkin":         LocationData(88213052, kidsparty, False, False, True),
+    war + " Pumpkin":               LocationData(88213053, war, False, False, True),
+    tower + " Pumpkin":             LocationData(88213054, tower, False, False, True),
+    trickytreat + " Pumpkin 1":     LocationData(88213901, trickytreat, False, False, True),
+    trickytreat + " Pumpkin 2":     LocationData(88213902, trickytreat, False, False, True),
+    trickytreat + " Pumpkin 3":     LocationData(88213903, trickytreat, False, False, True),
+    trickytreat + " Pumpkin 4":     LocationData(88213904, trickytreat, False, False, True),
+    trickytreat + " Pumpkin 5":     LocationData(88213905, trickytreat, False, False, True),
+    trickytreat + " Pumpkin 6":     LocationData(88213906, trickytreat, False, False, True),
+    trickytreat + " Pumpkin 7":     LocationData(88213907, trickytreat, False, False, True),
+    trickytreat + " Pumpkin 8":     LocationData(88213908, trickytreat, False, False, True),
+    trickytreat + " Pumpkin 9":     LocationData(88213909, trickytreat, False, False, True),
+    trickytreat + " Pumpkin 10":    LocationData(88213910, trickytreat, False, False, True),
+}
+
+secret_table = {
+    entrance + " 1 Secret Eye":     LocationData(88214111, entrance, False, True),
+    entrance + " 2 Secret Eye":     LocationData(88214112, entrance, False, True),
+    entrance + " 3 Secret Eye":     LocationData(88214113, entrance, False, True),
+    medieval + " 1 Secret Eye":     LocationData(88214121, medieval, False, True),
+    medieval + " 2 Secret Eye":     LocationData(88214122, medieval, False, True),
+    medieval + " 3 Secret Eye":     LocationData(88214123, medieval, False, True),
+    ruin + " 1 Secret Eye":         LocationData(88214131, ruin, False, True),
+    ruin + " 2 Secret Eye":         LocationData(88214132, ruin, False, True),
+    ruin + " 3 Secret Eye":         LocationData(88214133, ruin, False, True),
+    dungeon + " 1 Secret Eye":      LocationData(88214141, dungeon, False, True),
+    dungeon + " 2 Secret Eye":      LocationData(88214142, dungeon, False, True),
+    dungeon + " 3 Secret Eye":      LocationData(88214143, dungeon, False, True),
+    badland + " 1 Secret Eye":      LocationData(88214211, badland, False, True),
+    badland + " 2 Secret Eye":      LocationData(88214212, badland, False, True),
+    badland + " 3 Secret Eye":      LocationData(88214213, badland, False, True),
+    graveyard + " 1 Secret Eye":    LocationData(88214221, graveyard, False, True),
+    graveyard + " 2 Secret Eye":    LocationData(88214222, graveyard, False, True),
+    graveyard + " 3 Secret Eye":    LocationData(88214223, graveyard, False, True),
+    farm + " 1 Secret Eye":         LocationData(88214231, farm, False, True),
+    farm + " 2 Secret Eye":         LocationData(88214232, farm, False, True),
+    farm + " 3 Secret Eye":         LocationData(88214233, farm, False, True),
+    saloon + " 1 Secret Eye":       LocationData(88214241, saloon, False, True),
+    saloon + " 2 Secret Eye":       LocationData(88214242, saloon, False, True),
+    saloon + " 3 Secret Eye":       LocationData(88214243, saloon, False, True),
+    plage + " 1 Secret Eye":        LocationData(88214311, plage, False, True),
+    plage + " 2 Secret Eye":        LocationData(88214312, plage, False, True),
+    plage + " 3 Secret Eye":        LocationData(88214313, plage, False, True),
+    forest + " 1 Secret Eye":       LocationData(88214321, forest, False, True),
+    forest + " 2 Secret Eye":       LocationData(88214322, forest, False, True),
+    forest + " 3 Secret Eye":       LocationData(88214323, forest, False, True),
+    space + " 1 Secret Eye":        LocationData(88214331, space, False, True),
+    space + " 2 Secret Eye":        LocationData(88214332, space, False, True),
+    space + " 3 Secret Eye":        LocationData(88214333, space, False, True),
+    minigolf + " 1 Secret Eye":     LocationData(88214341, minigolf, False, True),
+    minigolf + " 2 Secret Eye":     LocationData(88214342, minigolf, False, True),
+    minigolf + " 3 Secret Eye":     LocationData(88214343, minigolf, False, True),
+    street + " 1 Secret Eye":       LocationData(88214411, street, False, True),
+    street + " 2 Secret Eye":       LocationData(88214412, street, False, True),
+    street + " 3 Secret Eye":       LocationData(88214413, street, False, True),
+    industrial + " 1 Secret Eye":   LocationData(88214421, industrial, False, True),
+    industrial + " 2 Secret Eye":   LocationData(88214422, industrial, False, True),
+    industrial + " 3 Secret Eye":   LocationData(88214423, industrial, False, True),
+    sewer + " 1 Secret Eye":        LocationData(88214431, sewer, False, True),
+    sewer + " 2 Secret Eye":        LocationData(88214432, sewer, False, True),
+    sewer + " 3 Secret Eye":        LocationData(88214433, sewer, False, True),
+    freezer + " 1 Secret Eye":      LocationData(88214441, freezer, False, True),
+    freezer + " 2 Secret Eye":      LocationData(88214442, freezer, False, True),
+    freezer + " 3 Secret Eye":      LocationData(88214443, freezer, False, True),
+    chateau + " 1 Secret Eye":      LocationData(88214511, chateau, False, True),
+    chateau + " 2 Secret Eye":      LocationData(88214512, chateau, False, True),
+    chateau + " 3 Secret Eye":      LocationData(88214513, chateau, False, True),
+    kidsparty + " 1 Secret Eye":    LocationData(88214521, kidsparty, False, True),
+    kidsparty + " 2 Secret Eye":    LocationData(88214522, kidsparty, False, True),
+    kidsparty + " 3 Secret Eye":    LocationData(88214523, kidsparty, False, True),
+    war + " 1 Secret Eye":          LocationData(88214531, war, False, True),
+    war + " 2 Secret Eye":          LocationData(88214532, war, False, True),
+    war + " 3 Secret Eye":          LocationData(88214533, war, False, True)
+}
+
+
 location_table = {
     **task_table,
-    **treasure_table
+    **treasure_table,
+    **pumpkin_table,
+    **secret_table
 }
+
+

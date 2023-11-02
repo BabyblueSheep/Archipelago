@@ -33,6 +33,9 @@ noise = "The Noise"
 fakepep = "Fake Peppino"
 pizzaface = "Pizzaface"
 
+trickytreat = "Tricky Treat"
+secretlevel = "Secrets of the World"
+
 
 hub1 = "Tower Lobby"
 hub2 = "Western District"
