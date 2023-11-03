@@ -30,7 +30,7 @@ def set_rules(world: MultiWorld, player: int):
     add_rule(world.get_entrance(trickytreat + " Entrance", player),
              lambda state: state.count_group("pumpkins", player) >= 20)
 
-    add_rule(world.get_entrance(trickytreat + " Entrance", player),
-             lambda state: state.multiworld.pumpkin_hunt[player].value)
-    add_rule(world.get_entrance(secretlevel + " Entrance", player),
-             lambda state: state.multiworld.secret_eye_check[player].value)
+    add_rule(world.get_location("Escape " + trickytreat, player),
+             lambda state: world.pumpkin_hunt[player].value)
+    add_rule(world.get_location("Escape " + secretlevel, player),
+             lambda state: world.secret_eye_check[player].value)
