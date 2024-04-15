@@ -1,17 +1,18 @@
 from BaseClasses import MultiWorld, Region, Entrance
 from .Names import *
 from .Locations import location_table, LocationData, PizzaTowerLocation
+from .Options import *
 
 
-def create_region(world: MultiWorld, player: int, name: str, exits=None):
+def create_region(world: MultiWorld, player: int, name: str, world_options: PizzaTowerOptions, exits=None):
     region = Region(name, player, world)
     loc_name: str
     location: LocationData
     for loc_name in location_table:
         if location_table[loc_name].region == name:
-            is_treasure_allowed = (not location_table[loc_name].treasure) or world.treasure_check[player].value
-            is_secret_allowed = (not location_table[loc_name].secret) or world.secret_eye_check[player].value
-            is_pumpkin_allowed = (not location_table[loc_name].pumpkin) or world.pumpkin_hunt[player].value
+            is_treasure_allowed = (not location_table[loc_name].treasure) or bool(world_options.treasure_check.value)
+            is_secret_allowed = (not location_table[loc_name].secret) or bool(world_options.secret_eye_check.value)
+            is_pumpkin_allowed = (not location_table[loc_name].pumpkin) or bool(world_options.pumpkin_hunt.value)
             if is_treasure_allowed and is_secret_allowed and is_pumpkin_allowed:
                 region.locations.append(PizzaTowerLocation(player, loc_name, location_table[loc_name].id, region))
 
@@ -22,14 +23,14 @@ def create_region(world: MultiWorld, player: int, name: str, exits=None):
     return region
 
 
-def create_regions(world: MultiWorld, player: int):
+def create_regions(world: MultiWorld, player: int, world_options: PizzaTowerOptions):
     for region_name in pizza_tower_regions:
-        world.regions.append(create_region(world, player, region_name, pizza_tower_regions[region_name]))
+        world.regions.append(create_region(world, player, region_name, world_options, pizza_tower_regions[region_name]))
     for region_exit in mandatory_connections:
         world.get_entrance(region_exit, player) \
             .connect(world.get_region(mandatory_connections[region_exit], player))
 
-    if world.shuffle_level[player].value:
+    if world_options.shuffle_level:
         entrances = list(default_connections.keys())
         regions = list(default_connections.values())
         world.random.shuffle(regions)

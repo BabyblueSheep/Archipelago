@@ -1,5 +1,6 @@
 from BaseClasses import Location
 import typing
+from dataclasses import dataclass
 
 from .Names import *
 

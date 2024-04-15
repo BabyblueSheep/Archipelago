@@ -1,5 +1,6 @@
+from dataclasses import dataclass
 import typing
-from Options import Choice, Toggle, Option, DeathLink, Range
+from Options import Choice, Toggle, DeathLink, Range, PerGameCommonOptions
 
 
 class BaseTrapWeight(Choice):
@@ -113,24 +114,24 @@ class TowerSecretEye(Toggle):
     display_name = "Secrets"
 
 
-pizza_tower_options: typing.Dict[str, type(Option)] = {
-    "death_link": DeathLink,
+@dataclass
+class PizzaTowerOptions(PerGameCommonOptions):
+    death_link: DeathLink
 
-    "boss_keys": BossKeys,
-    "treasure_check": TowerSecretTreasure,
-    "secret_eye_check": TowerSecretEye,
-    "pumpkin_hunt": PumpkinHunt,
+    boss_keys: BossKeys
+    treasure_check: TowerSecretTreasure
+    secret_eye_check: TowerSecretEye
+    pumpkin_hunt: PumpkinHunt
 
-    "timer_trap": TimerTrap,
-    "timer_reduce": TimerTrapReduce,
-    "stun_trap": StunTrap,
-    "transformation_trap": TransformationTrap,
-    "transformation_time": TransformationTrapTime,
-    "trap_fill_percentage": TrapFillPercentage,
+    timer_trap: TimerTrap
+    timer_reduce: TimerTrapReduce
+    stun_trap: StunTrap
+    transformation_trap: TransformationTrap
+    transformation_time: TransformationTrapTime
+    trap_fill_percentage: TrapFillPercentage
 
-    "shuffle_level": LevelShuffle,
+    shuffle_level: LevelShuffle
 
-    "rank_needed": RankRequirement,
-    "goal": JudgementRequirement,
-    "john": JohnNeeded,
-}
+    rank_needed: RankRequirement
+    goal: JudgementRequirement
+    john: JohnNeeded

@@ -1,7 +1,7 @@
 from BaseClasses import Tutorial
 from .Rules import set_rules
 from ..AutoWorld import World, WebWorld
-from .Options import pizza_tower_options
+from .Options import PizzaTowerOptions
 from .Items import item_table, PizzaTowerItem, toppin_table, pumpkin_table, treasure_table
 from .Locations import PizzaTowerLocation, location_table
 from . import Options, Items, Locations, Regions, Rules
@@ -29,7 +29,8 @@ class PizzaTowerWorld(World):
     escape sequences, and bosses."""
 
     game = "Pizza Tower"
-    option_definitions = pizza_tower_options
+    options_dataclass = PizzaTowerOptions
+    options: PizzaTowerOptions
     web = PizzaTowerWeb()
 
     item_name_to_id = {name: data.code for name, data in item_table.items()}
@@ -45,35 +46,36 @@ class PizzaTowerWorld(World):
         "pumpkins": set(pumpkin_table.keys())
     }
 
-    def get_option(self, name):
-        return getattr(self.multiworld, name)[self.player].value
-
     def fill_slot_data(self):
-        slot_data = {}
-
-        for option_name in self.option_definitions:
-            slot_data[option_name] = self.get_option(option_name)
-
-        return slot_data
+        return {
+            "death_link": self.options.death_link.value,
+            "treasure_check": self.options.treasure_check.value,
+            "secret_eye_check": self.options.secret_eye_check.value,
+            "pumpkin_hunt": self.options.pumpkin_hunt.value,
+            "shuffle_level": self.options.shuffle_level.value,
+            "rank_needed": self.options.rank_needed.value,
+            "goal": self.options.goal.value,
+            "john": self.options.john.value
+        }
 
     def create_item(self, name: str) -> PizzaTowerItem:
-        return Items.create_item(self.multiworld, name, self.player)
+        return Items.create_item(self.multiworld, name, self.player, self.options)
 
     def create_regions(self) -> None:
-        create_regions(self.multiworld, self.player)
+        create_regions(self.multiworld, self.player, self.options)
 
     def create_items(self) -> None:
-        Items.create_all_items(self.multiworld, self.player)
+        Items.create_all_items(self.multiworld, self.player, self.options)
 
     def set_rules(self) -> None:
-        set_rules(self.multiworld, self.player)
+        set_rules(self.multiworld, self.player, self.options)
 
     def generate_basic(self) -> None:
         world = self.multiworld
         victory_item = world.create_item("Victory", self.player)
         self.multiworld.get_location("Escape " + tower, self.player).place_locked_item(victory_item)
 
-        if world.boss_keys[self.player].value == 0:
+        if self.options.boss_keys.value == 0:
             pepperman_key = world.create_item(pepperman + " Boss Key", self.player)
             self.multiworld.get_location("Defeat " + pepperman, self.player).place_locked_item(pepperman_key)
             vigilante_key = world.create_item(vigilante + " Boss Key", self.player)

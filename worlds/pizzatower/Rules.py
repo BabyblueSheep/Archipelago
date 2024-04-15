@@ -1,9 +1,10 @@
 from BaseClasses import MultiWorld
 from ..generic.Rules import add_rule
 from .Names import *
+from .Options import *
 
 
-def set_rules(world: MultiWorld, player: int):
+def set_rules(world: MultiWorld, player: int, world_options: PizzaTowerOptions):
     world.completion_condition[player] = lambda state: \
         state.has("Victory", player)
 
@@ -31,6 +32,6 @@ def set_rules(world: MultiWorld, player: int):
              lambda state: state.count_group("pumpkins", player) >= 20)
 
     add_rule(world.get_location("Escape " + trickytreat, player),
-             lambda state: world.pumpkin_hunt[player].value)
+             lambda state: bool(world_options.pumpkin_hunt.value))
     add_rule(world.get_location("Escape " + secretlevel, player),
-             lambda state: world.secret_eye_check[player].value)
+             lambda state: bool(world_options.secret_eye_check.value))

@@ -1,9 +1,10 @@
 import math
+from dataclasses import dataclass
 
 from BaseClasses import Item, ItemClassification, MultiWorld
 from .Names import *
-from typing import Dict, NamedTuple, Optional
-
+from typing import NamedTuple, Optional
+from .Options import *
 
 class ItemData(NamedTuple):
     code: Optional[int]
@@ -18,12 +19,12 @@ class PizzaTowerItem(Item):
     game: str = "Pizza Tower"
 
 
-def create_item(world: MultiWorld, name: str, player: int) -> PizzaTowerItem:
+def create_item(world: MultiWorld, name: str, player: int, world_options: PizzaTowerOptions) -> PizzaTowerItem:
     item_data = item_table[name]
     if item_data.required:
         classification = ItemClassification.progression
     elif item_data.treasure:
-        if world.john[player].value:
+        if world_options.john:
             classification = ItemClassification.progression
         else:
             classification = ItemClassification.useful
@@ -37,11 +38,11 @@ def create_item(world: MultiWorld, name: str, player: int) -> PizzaTowerItem:
     return item
 
 
-def create_all_items(world: MultiWorld, player: int) -> None:
+def create_all_items(world: MultiWorld, player: int, world_options: PizzaTowerOptions) -> None:
     exclude = [item for item in world.precollected_items[player]]
     exclude.append(world.create_item("Victory", player))
 
-    if world.boss_keys[player].value == 0:
+    if world_options.boss_keys.value == 0:
         exclude.append(world.create_item(pepperman + " Boss Key", player))
         exclude.append(world.create_item(vigilante + " Boss Key", player))
         exclude.append(world.create_item(noise + " Boss Key", player))
@@ -57,31 +58,31 @@ def create_all_items(world: MultiWorld, player: int) -> None:
         if item not in exclude:
             world.itempool.append(item)
 
-    if world.treasure_check[player].value:
+    if world_options.treasure_check:
         for name, data in treasure_table.items():
             item = world.create_item(name, player)
             if item not in exclude:
                 world.itempool.append(item)
 
-    if world.pumpkin_hunt[player].value:
+    if world_options.pumpkin_hunt:
         for name, data in pumpkin_table.items():
             item = world.create_item(name, player)
             if item not in exclude:
                 world.itempool.append(item)
 
-    if world.secret_eye_check[player].value:
+    if world_options.secret_eye_check:
         for name, data in secret_table.items():
             item = world.create_item(name, player)
             if item not in exclude:
                 world.itempool.append(item)
 
-    junk_count = 21
+    junk_count = 22
     trap_weights = []
-    trap_weights += (["Stun Trap"] * world.timer_trap[player].value)
-    trap_weights += (["Timer Trap"] * world.stun_trap[player].value)
-    trap_weights += (["Transformation Trap"] * world.transformation_trap[player].value)
+    trap_weights += (["Stun Trap"] * world_options.timer_trap.value)
+    trap_weights += (["Timer Trap"] * world_options.stun_trap.value)
+    trap_weights += (["Transformation Trap"] * world_options.transformation_trap.value)
     trap_count = 0 if (len(trap_weights) == 0) else math.ceil(
-        junk_count * (world.trap_fill_percentage[player].value / 100.0))
+        junk_count * (world_options.trap_fill_percentage / 100.0))
     junk_count -= trap_count
 
     trap_pool = []
