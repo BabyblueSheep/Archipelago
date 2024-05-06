@@ -38,7 +38,7 @@ class PizzaTowerWorld(World):
 
     data_version = 0
 
-    required_client_version = (0, 4, 3)
+    required_client_version = (0, 4, 6)
 
     item_name_groups = {
         "toppins": set(toppin_table.keys()),
