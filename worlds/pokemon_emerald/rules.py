@@ -464,7 +464,7 @@ def set_rules(world: "PokemonEmeraldWorld") -> None:
 
     # Slateport City
     set_rule(
-        get_entrance("REGION_SLATEPORT_CITY/MAIN -> REGION_ROUTE134/WEST"),
+        get_entrance("REGION_SLATEPORT_CITY/MAIN -> REGION_SLATEPORT_CITY/WATER"),
         hm_rules["HM03 Surf"]
     )
     set_rule(
@@ -557,6 +557,10 @@ def set_rules(world: "PokemonEmeraldWorld") -> None:
     set_rule(
         get_location("NPC_GIFT_GOT_BASEMENT_KEY_FROM_WATTSON"),
         lambda state: state.has("EVENT_DEFEAT_NORMAN", world.player)
+    )
+    set_rule(
+        get_location("NPC_GIFT_RECEIVED_COIN_CASE"),
+        lambda state: state.has("EVENT_BUY_HARBOR_MAIL", world.player)
     )
 
     # Route 117
@@ -992,6 +996,10 @@ def set_rules(world: "PokemonEmeraldWorld") -> None:
     if "Lilycove City Wailmer" not in world.options.remove_roadblocks.value:
         set_rule(
             get_entrance("REGION_LILYCOVE_CITY/SEA -> REGION_ROUTE124/MAIN"),
+            lambda state: state.has("EVENT_CLEAR_AQUA_HIDEOUT", world.player)
+        )
+        set_rule(
+            get_entrance("REGION_ROUTE124/MAIN -> REGION_LILYCOVE_CITY/SEA"),
             lambda state: state.has("EVENT_CLEAR_AQUA_HIDEOUT", world.player)
         )
 
@@ -1633,10 +1641,6 @@ def set_rules(world: "PokemonEmeraldWorld") -> None:
         set_rule(
             get_location("NPC_GIFT_GOT_TM_THUNDERBOLT_FROM_WATTSON"),
             lambda state: state.has("EVENT_DEFEAT_NORMAN", world.player) and state.has("EVENT_TURN_OFF_GENERATOR", world.player)
-        )
-        set_rule(
-            get_location("NPC_GIFT_RECEIVED_COIN_CASE"),
-            lambda state: state.has("EVENT_BUY_HARBOR_MAIL", world.player)
         )
 
         # Fallarbor Town
